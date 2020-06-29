@@ -1,6 +1,6 @@
 # Spirit Engine
 
-[//]: ![Hazel](/Resources/Branding/Hazel_Logo_Text_Light_Square.png?raw=true "Hazel")
+[//]: #![Hazel](/Resources/Branding/Hazel_Logo_Text_Light_Square.png?raw=true "Hazel")
 
 Spirit Engine is primarily an early-stage interactive application and rendering engine for Windows. Currently not much is implemented.
 
