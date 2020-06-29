@@ -1,3 +1,5 @@
+#include "spiritpch.h"
+
 #include "vec3.h"
 
 namespace Spirit { namespace Maths { 

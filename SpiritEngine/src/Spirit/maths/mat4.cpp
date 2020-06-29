@@ -1,3 +1,4 @@
+#include "spiritpch.h"
 #include "maths.h"
 
 namespace Spirit { namespace Maths { 
@@ -51,7 +52,7 @@ namespace Spirit { namespace Maths {
         return multiply(other);
     }
 
-    mat4 mat4::orthographic(float left, float right, float bottom, float top, float near, float far)
+    mat4 mat4::orthographic(float left, float right, float bottom, float top, float nearPos, float farPos)
     {
         mat4 result(1.0f);
 
@@ -59,23 +60,23 @@ namespace Spirit { namespace Maths {
 
         result.elements[1 + 1 * 4] = 2.0f / (top - bottom);
         
-        result.elements[2 + 2 * 4] = 2.0f / (near - far);
+        result.elements[2 + 2 * 4] = 2.0f / (nearPos - farPos);
 
         result.elements[0 + 3 * 4] = 2.0f / (left + right) / (left - right);
         result.elements[1 + 3 * 4] = 2.0f / (bottom + top) / (bottom - top);
-        result.elements[2 + 3 * 4] = 2.0f / (far + near) / (far - near);
+        result.elements[2 + 3 * 4] = 2.0f / (farPos + nearPos) / (farPos - nearPos);
 
         return result;
     }
-    mat4 mat4::perspective(float fov, float aspectRatio, float near, float far)
+    mat4 mat4::perspective(float fov, float aspectRatio, float nearPos, float farPos)
     {
         mat4 result(1.0f);
 
         float q = 1.0f / tan(toRadians(0.5 * fov));
         float a = q / aspectRatio;
 
-        float b = (near + far) / (near - far);
-        float c = (2.0f * near * far) / (near - far);
+        float b = (nearPos + farPos) / (nearPos - farPos);
+        float c = (2.0f * nearPos * farPos) / (nearPos - farPos);
 
         result.elements[0 + 0 * 4] = a;
         result.elements[1 + 1 * 4] = q;

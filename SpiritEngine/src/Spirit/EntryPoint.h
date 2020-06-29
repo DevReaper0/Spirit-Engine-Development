@@ -1,5 +1,7 @@
 #pragma once
 
+//#include "Spirit/Log.h"
+
 #ifdef SPIRIT_PLATFORM_WINDOWS
 
 extern Spirit::Application* Spirit::CreateApplication();
