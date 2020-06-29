@@ -1,5 +1,10 @@
 # Spirit Engine
 
+**THIS PAGE IS THE DEVELOPMENT VERSION!!
+TO GET THE NORMAL RELEASES, USE THIS LINK:
+[Spirit Engine](https://github.com/DaRubyMiner360/Spirit-Engine)
+JUST REMEMBER THAT THE THIS MIGHT HAVE MANY MORE BUGS THAN THE NORMAL RELEASES!!
+DON'T SAY I DIDN'T WARN YOU!**
 
 <!--- ![Hazel](/Resources/Branding/Hazel_Logo_Text_Light_Square.png?raw=true "Hazel") -->
 
