@@ -172,6 +172,7 @@
     <ClCompile Include="src\Spirit\Application.cpp" />
     <ClCompile Include="src\Spirit\Log.cpp" />
     <ClCompile Include="src\Spirit\Platform\Windows\WindowsWindow.cpp" />
+    <ClCompile Include="src\Spirit\Window.cpp" />
     <ClCompile Include="src\Spirit\maths\mat4.cpp" />
     <ClCompile Include="src\Spirit\maths\vec2.cpp" />
     <ClCompile Include="src\Spirit\maths\vec3.cpp" />
@@ -179,7 +180,6 @@
     <ClCompile Include="src\spiritpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\Spirit\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="vendor\GLFW\GLFW.vcxproj">
