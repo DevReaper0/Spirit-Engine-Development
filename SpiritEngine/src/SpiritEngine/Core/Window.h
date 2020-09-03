@@ -13,7 +13,7 @@ namespace SpiritEngine {
 		uint32_t Width;
 		uint32_t Height;
 
-		WindowProps(const std::string& title = "SpiritEngine Engine",
+		WindowProps(const std::string& title = "Spirit Engine",
 			        uint32_t width = 1280,
 			        uint32_t height = 720)
 			: Title(title), Width(width), Height(height)

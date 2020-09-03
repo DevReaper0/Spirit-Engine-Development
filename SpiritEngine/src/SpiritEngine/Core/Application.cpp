@@ -78,6 +78,8 @@ namespace SpiritEngine {
 
 		while (m_Running)
 		{
+
+
 			SPIRIT_PROFILE_SCOPE("RunLoop");
 
 			float time = (float)glfwGetTime();

@@ -27,15 +27,9 @@ namespace SpiritEngine {
 
 	class Instrumentor
 	{
-	private:
-		std::mutex m_Mutex;
-		InstrumentationSession* m_CurrentSession;
-		std::ofstream m_OutputStream;
 	public:
-		Instrumentor()
-			: m_CurrentSession(nullptr)
-		{
-		}
+		Instrumentor(const Instrumentor&) = delete;
+		Instrumentor(Instrumentor&&) = delete;
 
 		void BeginSession(const std::string& name, const std::string& filepath = "results.json")
 		{
@@ -105,6 +99,16 @@ namespace SpiritEngine {
 
 	private:
 
+		Instrumentor()
+			: m_CurrentSession(nullptr)
+		{
+		}
+
+		~Instrumentor()
+		{
+			EndSession();
+		}
+		
 		void WriteHeader()
 		{
 			m_OutputStream << "{\"otherData\": {},\"traceEvents\":[{}";
@@ -129,7 +133,10 @@ namespace SpiritEngine {
 				m_CurrentSession = nullptr;
 			}
 		}
-
+	private:
+		std::mutex m_Mutex;
+		InstrumentationSession* m_CurrentSession;
+		std::ofstream m_OutputStream;
 	};
 
 	class InstrumentationTimer
@@ -218,8 +225,10 @@ namespace SpiritEngine {
 
 	#define SPIRIT_PROFILE_BEGIN_SESSION(name, filepath) ::SpiritEngine::Instrumentor::Get().BeginSession(name, filepath)
 	#define SPIRIT_PROFILE_END_SESSION() ::SpiritEngine::Instrumentor::Get().EndSession()
-	#define SPIRIT_PROFILE_SCOPE(name) constexpr auto fixedName = ::SpiritEngine::InstrumentorUtils::CleanupOutputString(name, "__cdecl ");\
-									::SpiritEngine::InstrumentationTimer timer##__LINE__(fixedName.Data)
+	#define HZ_PROFILE_SCOPE_LINE2(name, line) constexpr auto fixedName##line = ::Hazel::InstrumentorUtils::CleanupOutputString(name, "__cdecl ");\
+											   ::Hazel::InstrumentationTimer timer##line(fixedName##line.Data)
+	#define HZ_PROFILE_SCOPE_LINE(name, line) HZ_PROFILE_SCOPE_LINE2(name, line)
+	#define HZ_PROFILE_SCOPE(name) HZ_PROFILE_SCOPE_LINE(name, __LINE__)
 	#define SPIRIT_PROFILE_FUNCTION() SPIRIT_PROFILE_SCOPE(SPIRIT_FUNC_SIG)
 #else
 	#define SPIRIT_PROFILE_BEGIN_SESSION(name, filepath)

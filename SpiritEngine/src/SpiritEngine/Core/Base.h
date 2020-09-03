@@ -57,6 +57,7 @@
 	#define SPIRIT_DEBUGBREAK()
 #endif
 
+// TODO: Make this macro able to take in no arguments except condition
 #ifdef SPIRIT_ENABLE_ASSERTS
 	#define SPIRIT_ASSERT(x, ...) { if(!(x)) { SPIRIT_ERROR("Assertion Failed: {0}", __VA_ARGS__); SPIRIT_DEBUGBREAK(); } }
 	#define SPIRIT_CORE_ASSERT(x, ...) { if(!(x)) { SPIRIT_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); SPIRIT_DEBUGBREAK(); } }
@@ -67,7 +68,7 @@
 
 #define BIT(x) (1 << x)
 
-#define SPIRIT_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
+#define SPIRIT_BIND_EVENT_FN(fn) [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
 
 namespace SpiritEngine {
 

@@ -1,10 +1,11 @@
 # Binaries
 **/bin/
-!vendor/bin/premake/
+#!vendor/bin/premake/
 bin-int/
 
 # Spirit Engine files
 *.log
+*.spiritlog
 
 # Visual Studio files and folder
 .vs/

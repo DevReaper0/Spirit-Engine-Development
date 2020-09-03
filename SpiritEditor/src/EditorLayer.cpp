@@ -4,14 +4,13 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+//#include <SpiritEngine/Scene/Scene.h>
+
 #include <SpiritEngine/Audio/SpiritAudio.h>
 
-#include <thread>
-#include <chrono>
+//#include "ConsoleSpirit3D/ConsoleSpirit3D.cpp"
 
-#include <stdio.h>
-
-#define SPIRIT_WINDOW_HIERARCHY ImGui::Begin("Hierarchy"); ImGui::End();
+//#define SPIRIT_WINDOW_HIERARCHY ImGui::Begin("Hierarchy"); ImGui::End();
 
 namespace SpiritEngine {
 
@@ -24,13 +23,62 @@ namespace SpiritEngine {
 	{
 		SPIRIT_PROFILE_FUNCTION();
 
-		m_CheckerboardTexture = SpiritEngine::Texture2D::Create("assets/textures/Checkerboard.png");
-		//m_CheckerboardTexture = SpiritEngine::Texture2D::Create("assets/textures/ChernoLogo.png");
+		m_CheckerboardTexture = Texture2D::Create("assets/textures/Checkerboard.png");
+		//m_CheckerboardTexture = Texture2D::Create("assets/textures/ChernoLogo.png");
 
-		SpiritEngine::FramebufferSpecification fbSpec;
+		FramebufferSpecification fbSpec;
 		fbSpec.Width = 1280;
 		fbSpec.Height = 720;
-		m_Framebuffer = SpiritEngine::Framebuffer::Create(fbSpec);
+		m_Framebuffer = Framebuffer::Create(fbSpec);
+
+		m_ActiveScene = CreateRef<Scene>();
+
+		// Entity
+		auto square = m_ActiveScene->CreateEntity("Green Square");
+		square.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f, 1.0f, 0.0f, 1.0f });
+
+		m_SquareEntity = square;
+
+		m_CameraEntity = m_ActiveScene->CreateEntity("Camera Entity");
+		m_CameraEntity.AddComponent<CameraComponent>();
+
+		m_SecondCamera = m_ActiveScene->CreateEntity("Clip-Space Entity");
+		auto& cc = m_SecondCamera.AddComponent<CameraComponent>();
+		cc.Primary = false;
+
+		class CameraController : public ScriptableEntity
+		{
+		public:
+			void OnCreate()
+			{
+				auto& transform = GetComponent<TransformComponent>().Transform;
+				transform[3][0] = rand() % 10 - 5.0f;
+			}
+
+			void OnDestroy()
+			{
+			}
+
+			void OnUpdate(Timestep ts)
+			{
+				auto& transform = GetComponent<TransformComponent>().Transform;
+				float speed = 5.0f;
+
+				if (Input::IsKeyPressed(KeyCode::A))
+					transform[3][0] -= speed * ts;
+				if (Input::IsKeyPressed(KeyCode::D))
+					transform[3][0] += speed * ts;
+				if (Input::IsKeyPressed(KeyCode::W))
+					transform[3][1] += speed * ts;
+				if (Input::IsKeyPressed(KeyCode::S))
+					transform[3][1] -= speed * ts;
+			}
+		};
+
+		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+		m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 	}
 
 	void EditorLayer::OnDetach()
@@ -38,48 +86,35 @@ namespace SpiritEngine {
 		SPIRIT_PROFILE_FUNCTION();
 	}
 
-	void EditorLayer::OnUpdate(SpiritEngine::Timestep ts)
+	void EditorLayer::OnUpdate(Timestep ts)
 	{
 		SPIRIT_PROFILE_FUNCTION();
+
+		// Resize
+		if (FramebufferSpecification spec = m_Framebuffer->GetSpecification();
+			m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f && // zero sized framebuffer is invalid
+			(spec.Width != m_ViewportSize.x || spec.Height != m_ViewportSize.y))
+		{
+			m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+			m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
+
+			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+		}
 
 		// Update
 		if (m_ViewportFocused)
 			m_CameraController.OnUpdate(ts);
 
 		// Render
-		SpiritEngine::Renderer2D::ResetStats();
-		{
-			SPIRIT_PROFILE_SCOPE("Renderer Prep");
-			m_Framebuffer->Bind();
-			SpiritEngine::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
-			SpiritEngine::RenderCommand::Clear();
-		}
+		Renderer2D::ResetStats();
+		m_Framebuffer->Bind();
+		RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
+		RenderCommand::Clear();
 
-		{
-			static float rotation = 0.0f;
-			rotation += ts * 50.0f;
+		// Update scene
+		m_ActiveScene->OnUpdate(ts);
 
-			SPIRIT_PROFILE_SCOPE("Renderer Draw");
-			SpiritEngine::Renderer2D::BeginScene(m_CameraController.GetCamera());
-			SpiritEngine::Renderer2D::DrawRotatedQuad({ 1.0f, 0.0f }, { 0.8f, 0.8f }, -45.0f, { 0.8f, 0.2f, 0.3f, 1.0f });
-			SpiritEngine::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
-			SpiritEngine::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, m_SquareColor);
-			SpiritEngine::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 20.0f, 20.0f }, m_CheckerboardTexture, 10.0f);
-			SpiritEngine::Renderer2D::DrawRotatedQuad({ -2.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, rotation, m_CheckerboardTexture, 20.0f);
-			SpiritEngine::Renderer2D::EndScene();
-
-			SpiritEngine::Renderer2D::BeginScene(m_CameraController.GetCamera());
-			for (float y = -5.0f; y < 5.0f; y += 0.5f)
-			{
-				for (float x = -5.0f; x < 5.0f; x += 0.5f)
-				{
-					glm::vec4 color = { (x + 5.0f) / 10.0f, 0.4f, (y + 5.0f) / 10.0f, 0.7f };
-					SpiritEngine::Renderer2D::DrawQuad({ x, y }, { 0.45f, 0.45f }, color);
-				}
-			}
-			SpiritEngine::Renderer2D::EndScene();
-			m_Framebuffer->Unbind();
-		}
+		m_Framebuffer->Unbind();
 	}
 
 	void EditorLayer::OnImGuiRender()
@@ -139,7 +174,7 @@ namespace SpiritEngine {
 				// which we can't undo at the moment without finer window depth/z control.
 				//ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistant);
 
-				if (ImGui::MenuItem("Exit")) SpiritEngine::Application::Get().Close();
+				if (ImGui::MenuItem("Exit")) Application::Get().Close();
 				/*if (is3D)
 				{
 					if (ImGui::MenuItem("Make 2D")) Make2D();
@@ -151,25 +186,7 @@ namespace SpiritEngine {
 				ImGui::EndMenu();
 			}
 
-			if (ImGui::BeginMenu("Edit"))
-			{
-				// Disabling fullscreen would allow the window to be moved to the front of other windows, 
-				// which we can't undo at the moment without finer window depth/z control.
-				//ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistant);
-
-				//if (ImGui::MenuItem("Exit")) SpiritEngine::Application::Get().Close();
-				if (is3D)
-				{
-					if (ImGui::MenuItem("Make 2D")) Make2D();
-				}
-				else
-				{
-					if (ImGui::MenuItem("Make 3D")) Make3D();
-				}
-				ImGui::EndMenu();
-			}
-
-			if (ImGui::BeginMenu("Audio"))
+			/*if (ImGui::BeginMenu("Audio"))
 			{
 				// Disabling fullscreen would allow the window to be moved to the front of other windows, 
 				// which we can't undo at the moment without finer window depth/z control.
@@ -191,7 +208,7 @@ namespace SpiritEngine {
 				if (ImGui::MenuItem("Rename To SpiritAudio From AIFF")) RenameAudio("assets/audio/BackgroundMusic", ".aiff", "assets/audio/BackgroundMusic", ".spiritaudio");
 				if (ImGui::MenuItem("Rename To SpiritAudio From CDA")) RenameAudio("assets/audio/BackgroundMusic", ".cda", "assets/audio/BackgroundMusic", ".spiritaudio");
 				ImGui::EndMenu();
-			}
+			}*/
 
 			/*if (ImGui::BeginMenu("Window"))
 			{
@@ -203,19 +220,66 @@ namespace SpiritEngine {
 				ImGui::EndMenu();
 			}*/
 
+			if (ImGui::BeginMenu("Edit"))
+			{
+				// Disabling fullscreen would allow the window to be moved to the front of other windows, 
+				// which we can't undo at the moment without finer window depth/z control.
+				//ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistant);
+
+				//if (ImGui::MenuItem("Exit")) Application::Get().Close();
+				if (is3D)
+				{
+					if (ImGui::MenuItem("Make 2D")) Make2D();
+					//if (ImGui::MenuItem("Open Console Spirit3D"));
+				}
+				else
+				{
+					if (ImGui::MenuItem("Make 3D")) Make3D();
+					//if (ImGui::MenuItem("Open Console Spirit2D")) MakeConsole();
+				}
+				ImGui::EndMenu();
+			}
+
 			ImGui::EndMenuBar();
 		}
 
+		m_SceneHierarchyPanel.OnImGuiRender();
+
 		ImGui::Begin("Inspector");
 
-		auto stats = SpiritEngine::Renderer2D::GetStats();
+		auto stats = Renderer2D::GetStats();
 		ImGui::Text("Renderer2D Stats:");
 		ImGui::Text("Draw Calls: %d", stats.DrawCalls);
 		ImGui::Text("Quads: %d", stats.QuadCount);
 		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
 
-		ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
+		if (m_SquareEntity)
+		{
+			ImGui::Separator();
+			auto& tag = m_SquareEntity.GetComponent<TagComponent>().Tag;
+			ImGui::Text("%s", tag.c_str());
+
+			auto& squareColor = m_SquareEntity.GetComponent<SpriteRendererComponent>().Color;
+			ImGui::ColorEdit4("Square Color", glm::value_ptr(squareColor));
+			ImGui::Separator();
+		}
+
+		ImGui::DragFloat3("Camera Transform",
+			glm::value_ptr(m_CameraEntity.GetComponent<TransformComponent>().Transform[3]));
+
+		if (ImGui::Checkbox("Camera A", &m_PrimaryCamera))
+		{
+			m_CameraEntity.GetComponent<CameraComponent>().Primary = m_PrimaryCamera;
+			m_SecondCamera.GetComponent<CameraComponent>().Primary = !m_PrimaryCamera;
+		}
+
+		{
+			auto& camera = m_SecondCamera.GetComponent<CameraComponent>().Camera;
+			float orthoSize = camera.GetOrthographicSize();
+			if (ImGui::DragFloat("Second Camera Ortho Size", &orthoSize))
+				camera.SetOrthographicSize(orthoSize);
+		}
 
 		ImGui::End();
 
@@ -227,15 +291,10 @@ namespace SpiritEngine {
 		Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused || !m_ViewportHovered);
 
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-		if (m_ViewportSize != *((glm::vec2*)&viewportPanelSize) && viewportPanelSize.x > 0 && viewportPanelSize.y > 0)
-		{
-			m_Framebuffer->Resize((uint32_t)viewportPanelSize.x, (uint32_t)viewportPanelSize.y);
 			m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 
-			m_CameraController.OnResize(viewportPanelSize.x, viewportPanelSize.y);
-		}
-		uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
-		ImGui::Image((void*)textureID, ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+		uint64_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
+		ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 		ImGui::End();
 		ImGui::PopStyleVar();
 
@@ -245,7 +304,7 @@ namespace SpiritEngine {
 
 		//ImGui::Begin("Hierarchy");
 
-		/*auto stats = SpiritEngine::Renderer2D::GetStats();
+		/*auto stats = Renderer2D::GetStats();
 		ImGui::Text("Renderer2D Stats:");
 		ImGui::Text("Draw Calls: %d", stats.DrawCalls);
 		ImGui::Text("Quads: %d", stats.QuadCount);
@@ -256,10 +315,12 @@ namespace SpiritEngine {
 
 		//ImGui::End();
 
-		SPIRIT_WINDOW_HIERARCHY
+		//SPIRIT_WINDOW_HIERARCHY
+		/*ImGui::Begin("Hierarchy");
+		ImGui::End();*/
 	}
 
-	void EditorLayer::OnEvent(SpiritEngine::Event& e)
+	void EditorLayer::OnEvent(Event& e)
 	{
 		m_CameraController.OnEvent(e);
 	}
@@ -274,49 +335,73 @@ namespace SpiritEngine {
 		is3D = true;
 	}
 
+	void EditorLayer::MakeConsole()
+	{
+		if (!isConsole)
+		{
+			isConsole = true;
+
+			if (is3D)
+			{
+				//ConsoleSpirit3D consoleSpirit3D;
+				//hConsoleSpirit3D ConsoleSpirit3D;
+				//consoleSpirit3D.mainFunction();
+			}
+			else
+			{
+			}
+		}
+	}
+
 	void EditorLayer::PlayMusic()
 	{
 		// Initialize the audio engine
-		SpiritEngine::Audio::Init();
+		Audio::Init();
 		// Load audio source from file
-		auto source = SpiritEngine::AudioSource::LoadFromFile("assets/audio/BackgroundMusic.spiritaudio", false);
+		auto source = AudioSource::LoadFromFile("assets/audio/BackgroundMusic.spiritaudio", false);
 
-		for (int i = 0; i < 7; i++)
+		// Make it loop forever
+		source.SetLoop(true);
+
+		// Play audio source
+		Audio::Play(source);
+
+		/*for (int i = 0; i < 7; i++)
 		{
 			if (i == 0)
 			{
-				auto source = SpiritEngine::AudioSource::LoadFromFile("assets/audio/BackgroundMusic.spiritaudio", false);
+				auto source = AudioSource::LoadFromFile("assets/audio/BackgroundMusic.spiritaudio", false);
 			}
 			else if (i == 1)
 			{
-				auto source = SpiritEngine::AudioSource::LoadFromFile("assets/audio/BackgroundMusic.mp3", false);
+				auto source = AudioSource::LoadFromFile("assets/audio/BackgroundMusic.mp3", false);
 			}
 			else if (i == 2)
 			{
-				auto source = SpiritEngine::AudioSource::LoadFromFile("assets/audio/BackgroundMusic.wav", false);
+				auto source = AudioSource::LoadFromFile("assets/audio/BackgroundMusic.wav", false);
 			}
 			else if (i == 3)
 			{
-				auto source = SpiritEngine::AudioSource::LoadFromFile("assets/audio/BackgroundMusic.ogg", false);
+				auto source = AudioSource::LoadFromFile("assets/audio/BackgroundMusic.ogg", false);
 			}
 			else if (i == 4)
 			{
-				auto source = SpiritEngine::AudioSource::LoadFromFile("assets/audio/BackgroundMusic.midi", false);
+				auto source = AudioSource::LoadFromFile("assets/audio/BackgroundMusic.midi", false);
 			}
 			else if (i == 5)
 			{
-				auto source = SpiritEngine::AudioSource::LoadFromFile("assets/audio/BackgroundMusic.aiff", false);
+				auto source = AudioSource::LoadFromFile("assets/audio/BackgroundMusic.aiff", false);
 			}
 			else if (i == 6)
 			{
-				auto source = SpiritEngine::AudioSource::LoadFromFile("assets/audio/BackgroundMusic.cda", false);
+				auto source = AudioSource::LoadFromFile("assets/audio/BackgroundMusic.cda", false);
 			}
 			// Make it loop forever
 			source.SetLoop(true);
 
 			// Play audio source
-			SpiritEngine::Audio::Play(source);
-		}
+			Audio::Play(source);
+		}*/
 	}
 
 	void EditorLayer::RenameAudio(std::string oldName, std::string oldFormat, std::string newName, std::string newFormat)

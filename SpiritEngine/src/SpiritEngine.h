@@ -17,6 +17,10 @@
 
 #include "SpiritEngine/ImGui/ImGuiLayer.h"
 
+#include "SpiritEngine/Scene/Scene.h"
+#include "SpiritEngine/Scene/Entity.h"
+#include "SpiritEngine/Scene/Components.h"
+
 // ---Renderer------------------------
 #include "SpiritEngine/Renderer/Renderer.h"
 #include "SpiritEngine/Renderer/Renderer2D.h"

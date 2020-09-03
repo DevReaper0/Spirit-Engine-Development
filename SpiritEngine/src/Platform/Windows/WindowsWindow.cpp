@@ -10,6 +10,9 @@
 #include "SpiritEngine/Renderer/Renderer.h"
 
 #include "Platform/OpenGL/OpenGLContext.h"
+#include "SOIL2.h"
+#include "../SOIL/incs/stb_image.h"
+#include "../../SOIL/incs/stb_image_write.h"
 
 namespace SpiritEngine {
 	
@@ -43,6 +46,15 @@ namespace SpiritEngine {
 		m_Data.Height = props.Height;
 
 		SPIRIT_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
+		/*if (props.Title == "Spirit Engine")
+		{
+			SPIRIT_CORE_INFO("Starting Spirit Editor");
+			SPIRIT_CORE_INFO("Creating Scene View");
+			SPIRIT_CORE_INFO("Creating Game View");
+			SPIRIT_CORE_INFO("Finding User Preferences");
+			SPIRIT_CORE_INFO("Injecting User Preferences");
+			SPIRIT_CORE_INFO("Launching Spirit Editor");
+		}*/
 
 		if (s_GLFWWindowCount == 0)
 		{
@@ -157,6 +169,18 @@ namespace SpiritEngine {
 			MouseMovedEvent event((float)xPos, (float)yPos);
 			data.EventCallback(event);
 		});
+
+		/*GLFWimage images[1];
+		images[0].pixels = stbi_load("../icon.ico", &images[0].width, &images[0].height, 0, STBI_rgb_alpha); //rgba channels
+		glfwSetWindowIcon(m_Window, 1, images);
+		stbi_image_free(images[0].pixels);*/
+
+		/*GLFWimage icons[1];
+		icons[0].pixels = SOIL_load_image("../icon.ico", &icons[0].width, &icons[0].height, 0, SOIL_LOAD_RGBA);
+		glfwSetWindowIcon(m_Window, 1, icons);
+		SOIL_free_image_data(icons[0].pixels);*/
+
+		
 	}
 
 	void WindowsWindow::Shutdown()

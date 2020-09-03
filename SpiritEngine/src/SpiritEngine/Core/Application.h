@@ -18,7 +18,7 @@ namespace SpiritEngine {
 	class Application
 	{
 	public:
-		Application(const std::string& name = "SpiritEngine App");
+		Application(const std::string& name = "Spirit Engine App");
 		virtual ~Application();
 
 		void OnEvent(Event& e);

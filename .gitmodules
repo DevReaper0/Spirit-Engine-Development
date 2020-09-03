@@ -14,3 +14,6 @@
 	path = SpiritEngine/vendor/glm
 	url = https://github.com/g-truc/glm
 	branch = master
+[submodule "SpiritEngine/vendor/SOIL"]
+	path = SpiritEngine/vendor/SOIL
+	url = https://github.com/alelievr/SOIL2.git

@@ -7,7 +7,7 @@
 namespace SpiritEngine {
 
 	OrthographicCameraController::OrthographicCameraController(float aspectRatio, bool rotation)
-		: m_AspectRatio(aspectRatio), m_Camera(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel), m_Rotation(rotation)
+		: m_AspectRatio(aspectRatio), m_Bounds({ -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel }), m_Camera(m_Bounds.Left, m_Bounds.Right, m_Bounds.Bottom, m_Bounds.Top), m_Rotation(rotation)
 	{
 	}
 
@@ -15,26 +15,41 @@ namespace SpiritEngine {
 	{
 		SPIRIT_PROFILE_FUNCTION();
 
-		if (Input::IsKeyPressed(SPIRIT_KEY_A))
+		if (Input::IsKeyPressed(SPIRIT_KEY_A) || Input::IsKeyPressed(SPIRIT_KEY_LEFT))
 		{
 			m_CameraPosition.x -= cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
 			m_CameraPosition.y -= sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
 		}
-		else if (Input::IsKeyPressed(SPIRIT_KEY_D))
+		else if (Input::IsKeyPressed(SPIRIT_KEY_D) || Input::IsKeyPressed(SPIRIT_KEY_RIGHT))
 		{
 			m_CameraPosition.x += cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
 			m_CameraPosition.y += sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
 		}
 
-		if (Input::IsKeyPressed(SPIRIT_KEY_W))
+		if (Input::IsKeyPressed(SPIRIT_KEY_W) || Input::IsKeyPressed(SPIRIT_KEY_UP))
 		{
 			m_CameraPosition.x += -sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
 			m_CameraPosition.y += cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
 		}
-		else if (Input::IsKeyPressed(SPIRIT_KEY_S))
+		else if (Input::IsKeyPressed(SPIRIT_KEY_S) || Input::IsKeyPressed(SPIRIT_KEY_DOWN))
 		{
 			m_CameraPosition.x -= -sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
 			m_CameraPosition.y -= cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
+		}
+		else if (Input::IsKeyPressed(SPIRIT_KEY_Z))
+		{
+			m_CameraPosition.x = 0;
+			m_CameraPosition.y = 0;
+			m_CameraPosition.z = 0;
+		}
+
+		if (Input::IsKeyPressed(SPIRIT_KEY_X))
+		{
+			if(m_Rotation)
+				m_CameraRotation = 0;
+			m_CameraPosition.x = 0;
+			m_CameraPosition.y = 0;
+			m_CameraPosition.z = 0;
 		}
 
 		if (m_Rotation)
@@ -43,6 +58,8 @@ namespace SpiritEngine {
 				m_CameraRotation += m_CameraRotationSpeed * ts;
 			if (Input::IsKeyPressed(SPIRIT_KEY_E))
 				m_CameraRotation -= m_CameraRotationSpeed * ts;
+			if (Input::IsKeyPressed(SPIRIT_KEY_C))
+				m_CameraRotation = 0;
 
 			if (m_CameraRotation > 180.0f)
 				m_CameraRotation -= 360.0f;
@@ -55,6 +72,15 @@ namespace SpiritEngine {
 		m_Camera.SetPosition(m_CameraPosition);
 
 		m_CameraTranslationSpeed = m_ZoomLevel;
+
+		if (Input::IsKeyPressed(SPIRIT_KEY_R) && !Input::IsKeyPressed(SPIRIT_KEY_LEFT_SHIFT))
+		{
+			m_Rotation = false;
+		}
+		else if (Input::IsKeyPressed(SPIRIT_KEY_R) && Input::IsKeyPressed(SPIRIT_KEY_LEFT_SHIFT))
+		{
+			m_Rotation = true;
+		}
 	}
 
 	void OrthographicCameraController::OnEvent(Event& e)
@@ -69,7 +95,9 @@ namespace SpiritEngine {
 	void OrthographicCameraController::OnResize(float width, float height)
 	{
 		m_AspectRatio = width / height;
-		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+		m_Bounds = { -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel };
+		//m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+		m_Camera.SetProjection(m_Bounds.Left, m_Bounds.Right, m_Bounds.Bottom, m_Bounds.Top);
 	}
 
 	bool OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent& e)
@@ -78,7 +106,9 @@ namespace SpiritEngine {
 
 		m_ZoomLevel -= e.GetYOffset() * 0.25f;
 		m_ZoomLevel = std::max(m_ZoomLevel, 0.25f);
-		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+		m_Bounds = { -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel };
+		//m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+		m_Camera.SetProjection(m_Bounds.Left, m_Bounds.Right, m_Bounds.Bottom, m_Bounds.Top);
 		return false;
 	}
 

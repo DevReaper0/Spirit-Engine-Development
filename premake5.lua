@@ -1,6 +1,6 @@
 workspace "SpiritEngine"
 	architecture "x86_64"
-	startproject "Spirit"
+	startproject "SpiritEditor"
 
 	configurations
 	{
@@ -23,11 +23,18 @@ IncludeDir["Glad"] = "SpiritEngine/vendor/Glad/include"
 IncludeDir["ImGui"] = "SpiritEngine/vendor/imgui"
 IncludeDir["glm"] = "SpiritEngine/vendor/glm"
 IncludeDir["stb_image"] = "SpiritEngine/vendor/stb_image"
+IncludeDir["SFML"] = "SpiritEngine/vendor/SFML-2.5.1/include"
+IncludeDir["entt"] = "SpiritEngine/vendor/entt/include"
 
 group "Dependencies"
 	include "SpiritEngine/vendor/GLFW"
 	include "SpiritEngine/vendor/Glad"
 	include "SpiritEngine/vendor/imgui"
+	include "SpiritEngine/vendor/OpenAL-Soft"
+	include "SpiritEngine/vendor/libogg"
+	include "SpiritEngine/vendor/Vorbis"--,
+	--include "SpiritEngine/vendor/SOIL"
+	--include "SpiritEngine/vendor/AudioFile"
 group ""
 
 project "SpiritEngine"
@@ -51,12 +58,14 @@ project "SpiritEngine"
 		"%{prj.name}/vendor/stb_image/**.cpp",
 		"%{prj.name}/vendor/glm/glm/**.hpp",
 		"%{prj.name}/vendor/glm/glm/**.inl",
+		"%{prj.name}/app.rc"
 	}
 
 	defines
 	{
 		"_CRT_SECURE_NO_WARNINGS",
-		"GLFW_INCLUDE_NONE"
+		"GLFW_INCLUDE_NONE",
+		"AL_LIBTYPE_STATIC"
 	}
 
 	includedirs
@@ -67,7 +76,17 @@ project "SpiritEngine"
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.stb_image}"
+		"%{IncludeDir.stb_image}",
+		"%{IncludeDir.entt}",
+		"SpiritEngine/vendor/OpenAL-Soft/include",
+		"SpiritEngine/vendor/OpenAL-Soft/src",
+		"SpiritEngine/vendor/OpenAL-Soft/src/common",
+		"SpiritEngine/vendor/libogg/include",
+		"SpiritEngine/vendor/Vorbis/include",
+		"SpiritEngine/vendor/minimp3",
+		"SpiritEngine/vendor/SOIL/incs",
+		"SpiritEngine/vendor/SOIL/srcs"
+		--"SpiritEngine/vendor/AudioFile"
 	}
 
 	links 
@@ -75,7 +94,11 @@ project "SpiritEngine"
 		"GLFW",
 		"Glad",
 		"ImGui",
-		"opengl32.lib"
+		"opengl32.lib",
+		"OpenAL-Soft",
+		"Vorbis"--,
+		--"SOIL"
+		--"AudioFile"
 	}
 
 	filter "system:windows"
@@ -113,7 +136,8 @@ project "Sandbox"
 	files
 	{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/app.rc"
 	}
 
 	includedirs
@@ -121,7 +145,8 @@ project "Sandbox"
 		"SpiritEngine/vendor/spdlog/include",
 		"SpiritEngine/src",
 		"SpiritEngine/vendor",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.entt}"
 	}
 
 	links
@@ -147,8 +172,8 @@ project "Sandbox"
 		runtime "Release"
 		optimize "on"
 
-project "Spirit"
-	location "Spirit"
+project "SpiritEditor"
+	location "SpiritEditor"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++17"
@@ -160,7 +185,8 @@ project "Spirit"
 	files
 	{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/app.rc"
 	}
 
 	includedirs

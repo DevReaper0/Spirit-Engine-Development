@@ -2,6 +2,8 @@
 
 #include "SpiritEngine.h"
 
+#include "ParticleSystem.h"
+
 class Sandbox2D : public SpiritEngine::Layer
 {
 public:
@@ -22,6 +24,10 @@ private:
 	SpiritEngine::Ref<SpiritEngine::Shader> m_FlatColorShader;
 
 	SpiritEngine::Ref<SpiritEngine::Texture2D> m_CheckerboardTexture;
+	SpiritEngine::Ref<SpiritEngine::Texture2D> m_Spritesheet;
 
 	glm::vec4 m_SquareColor = { 0.2f, 0.3f, 0.8f, 1.0f };
+
+	ParticleSystem m_ParticleSystem;
+	ParticleProps m_Particle;
 };
