@@ -1,10 +1,11 @@
-#include "hzpch.h"
+#include "spiritpch.h"
 #include "Platform/OpenGL/OpenGLShader.h"
 
 #include <fstream>
 #include <glad/glad.h>
 
 #include <glm/gtc/type_ptr.hpp>
+#include <regex>
 
 namespace SpiritEngine {
 
@@ -88,23 +89,19 @@ namespace SpiritEngine {
 		SPIRIT_PROFILE_FUNCTION();
 
 		std::unordered_map<GLenum, std::string> shaderSources;
+		std::regex typeRegex{ "#type " };
+		std::sregex_token_iterator i(source.begin(), source.end(), typeRegex, -1);
+		std::sregex_token_iterator end;
 
-		const char* typeToken = "#type";
-		size_t typeTokenLength = strlen(typeToken);
-		size_t pos = source.find(typeToken, 0); //Start of shader type declaration line
-		while (pos != std::string::npos)
+		while (i != end)
 		{
-			size_t eol = source.find_first_of("\r\n", pos); //End of shader type declaration line
-			SPIRIT_CORE_ASSERT(eol != std::string::npos, "Syntax error");
-			size_t begin = pos + typeTokenLength + 1; //Start of shader type name (after "#type " keyword)
-			std::string type = source.substr(begin, eol - begin);
-			SPIRIT_CORE_ASSERT(ShaderTypeFromString(type), "Invalid shader type specified");
-
-			size_t nextLinePos = source.find_first_not_of("\r\n", eol); //Start of shader code after shader type declaration line
-			SPIRIT_CORE_ASSERT(nextLinePos != std::string::npos, "Syntax error");
-			pos = source.find(typeToken, nextLinePos); //Start of next shader type declaration line
-
-			shaderSources[ShaderTypeFromString(type)] = (pos == std::string::npos) ? source.substr(nextLinePos) : source.substr(nextLinePos, pos - nextLinePos);
+			std::string a = *(i++);
+			if (a.empty()) continue;
+			size_t eol = a.find_first_of('\n', 0);
+			auto shaderType = a.substr(0, eol);
+			auto shaderCode = a.substr(eol, a.size() - 1);
+			SPIRIT_CORE_ASSERT(ShaderTypeFromString(shaderType), "Invalid shader type specified");
+			shaderSources[ShaderTypeFromString(shaderType)] = shaderCode;
 		}
 
 		return shaderSources;
@@ -200,6 +197,18 @@ namespace SpiritEngine {
 		glUseProgram(0);
 	}
 
+	GLint OpenGLShader::GetUniformLocation(const std::string& name) const
+	{
+		SPIRIT_PROFILE_FUNCTION();
+
+		auto cachedLocation = m_UniformLocationCache.find(name);
+		if (cachedLocation != m_UniformLocationCache.end())
+			return cachedLocation->second;
+		GLint location = GetUniformLocation(name);
+		m_UniformLocationCache[name] = location;
+		return location;
+	}
+
 	void OpenGLShader::SetInt(const std::string& name, int value)
 	{
 		SPIRIT_PROFILE_FUNCTION();
@@ -242,49 +251,49 @@ namespace SpiritEngine {
 
 	void OpenGLShader::UploadUniformInt(const std::string& name, int value)
 	{
-		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+		GLint location = GetUniformLocation(name);
 		glUniform1i(location, value);
 	}
 
 	void OpenGLShader::UploadUniformIntArray(const std::string& name, int* values, uint32_t count)
 	{
-		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+		GLint location = GetUniformLocation(name);
 		glUniform1iv(location, count, values);
 	}
 
 	void OpenGLShader::UploadUniformFloat(const std::string& name, float value)
 	{
-		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+		GLint location = GetUniformLocation(name);
 		glUniform1f(location, value);
 	}
 
 	void OpenGLShader::UploadUniformFloat2(const std::string& name, const glm::vec2& value)
 	{
-		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+		GLint location = GetUniformLocation(name);
 		glUniform2f(location, value.x, value.y);
 	}
 
 	void OpenGLShader::UploadUniformFloat3(const std::string& name, const glm::vec3& value)
 	{
-		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+		GLint location = GetUniformLocation(name);
 		glUniform3f(location, value.x, value.y, value.z);
 	}
 
 	void OpenGLShader::UploadUniformFloat4(const std::string& name, const glm::vec4& value)
 	{
-		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+		GLint location = GetUniformLocation(name);
 		glUniform4f(location, value.x, value.y, value.z, value.w);
 	}
 
 	void OpenGLShader::UploadUniformMat3(const std::string& name, const glm::mat3& matrix)
 	{
-		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+		GLint location = GetUniformLocation(name);
 		glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 
 	void OpenGLShader::UploadUniformMat4(const std::string& name, const glm::mat4& matrix)
 	{
-		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+		GLint location = GetUniformLocation(name);
 		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 

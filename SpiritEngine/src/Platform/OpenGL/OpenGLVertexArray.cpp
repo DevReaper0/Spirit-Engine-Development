@@ -1,4 +1,4 @@
-#include "hzpch.h"
+#include "spiritpch.h"
 #include "Platform/OpenGL/OpenGLVertexArray.h"
 
 #include <glad/glad.h>

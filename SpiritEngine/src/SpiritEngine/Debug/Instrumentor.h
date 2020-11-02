@@ -225,10 +225,10 @@ namespace SpiritEngine {
 
 	#define SPIRIT_PROFILE_BEGIN_SESSION(name, filepath) ::SpiritEngine::Instrumentor::Get().BeginSession(name, filepath)
 	#define SPIRIT_PROFILE_END_SESSION() ::SpiritEngine::Instrumentor::Get().EndSession()
-	#define HZ_PROFILE_SCOPE_LINE2(name, line) constexpr auto fixedName##line = ::Hazel::InstrumentorUtils::CleanupOutputString(name, "__cdecl ");\
-											   ::Hazel::InstrumentationTimer timer##line(fixedName##line.Data)
-	#define HZ_PROFILE_SCOPE_LINE(name, line) HZ_PROFILE_SCOPE_LINE2(name, line)
-	#define HZ_PROFILE_SCOPE(name) HZ_PROFILE_SCOPE_LINE(name, __LINE__)
+	#define SPIRIT_PROFILE_SCOPE_LINE2(name, line) constexpr auto fixedName##line = ::SpiritEngine::InstrumentorUtils::CleanupOutputString(name, "__cdecl ");\
+											   ::SpiritEngine::InstrumentationTimer timer##line(fixedName##line.Data)
+	#define SPIRIT_PROFILE_SCOPE_LINE(name, line) SPIRIT_PROFILE_SCOPE_LINE2(name, line)
+	#define SPIRIT_PROFILE_SCOPE(name) SPIRIT_PROFILE_SCOPE_LINE(name, __LINE__)
 	#define SPIRIT_PROFILE_FUNCTION() SPIRIT_PROFILE_SCOPE(SPIRIT_FUNC_SIG)
 #else
 	#define SPIRIT_PROFILE_BEGIN_SESSION(name, filepath)

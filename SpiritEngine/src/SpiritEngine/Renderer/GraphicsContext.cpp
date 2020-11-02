@@ -1,4 +1,4 @@
-#include "hzpch.h"
+#include "spiritpch.h"
 #include "SpiritEngine/Renderer/GraphicsContext.h"
 
 #include "SpiritEngine/Renderer/Renderer.h"

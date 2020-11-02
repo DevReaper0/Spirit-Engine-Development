@@ -1,8 +1,9 @@
-#include "hzpch.h"
+#include "spiritpch.h"
 #include "SpiritEngine/Renderer/Texture.h"
 
 #include "SpiritEngine/Renderer/Renderer.h"
 #include "Platform/OpenGL/OpenGLTexture.h"
+#include "SpiritEngine/Core/Application.h"
 
 namespace SpiritEngine {
 

@@ -1,4 +1,4 @@
-#include "hzpch.h"
+#include "spiritpch.h"
 #include "SpiritEngine/Core/Window.h"
 
 #ifdef SPIRIT_PLATFORM_WINDOWS

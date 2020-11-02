@@ -74,10 +74,10 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>hzpch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>spiritpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLFW_INCLUDE_NONE;AL_LIBTYPE_STATIC;SPIRIT_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\entt\include;vendor\OpenAL-Soft\include;vendor\OpenAL-Soft\src;vendor\OpenAL-Soft\src\common;vendor\libogg\include;vendor\Vorbis\include;vendor\minimp3;vendor\SOIL\incs;vendor\SOIL\srcs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\entt\include;vendor\yaml-cpp\include;vendor\OpenAL-Soft\include;vendor\OpenAL-Soft\src;vendor\OpenAL-Soft\src\common;vendor\libogg\include;vendor\Vorbis\include;vendor\minimp3;vendor\SOIL\incs;vendor\SOIL\srcs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
@@ -87,7 +87,7 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLFW_INCLUDE_NONE;AL_LIBTYPE_STATIC;SPIRIT_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\entt\include;vendor\OpenAL-Soft\include;vendor\OpenAL-Soft\src;vendor\OpenAL-Soft\src\common;vendor\libogg\include;vendor\Vorbis\include;vendor\minimp3;vendor\SOIL\incs;vendor\SOIL\srcs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\entt\include;vendor\yaml-cpp\include;vendor\OpenAL-Soft\include;vendor\OpenAL-Soft\src;vendor\OpenAL-Soft\src\common;vendor\libogg\include;vendor\Vorbis\include;vendor\minimp3;vendor\SOIL\incs;vendor\SOIL\srcs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -101,10 +101,10 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>hzpch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>spiritpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLFW_INCLUDE_NONE;AL_LIBTYPE_STATIC;SPIRIT_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\entt\include;vendor\OpenAL-Soft\include;vendor\OpenAL-Soft\src;vendor\OpenAL-Soft\src\common;vendor\libogg\include;vendor\Vorbis\include;vendor\minimp3;vendor\SOIL\incs;vendor\SOIL\srcs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\entt\include;vendor\yaml-cpp\include;vendor\OpenAL-Soft\include;vendor\OpenAL-Soft\src;vendor\OpenAL-Soft\src\common;vendor\libogg\include;vendor\Vorbis\include;vendor\minimp3;vendor\SOIL\incs;vendor\SOIL\srcs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -116,7 +116,7 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLFW_INCLUDE_NONE;AL_LIBTYPE_STATIC;SPIRIT_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\entt\include;vendor\OpenAL-Soft\include;vendor\OpenAL-Soft\src;vendor\OpenAL-Soft\src\common;vendor\libogg\include;vendor\Vorbis\include;vendor\minimp3;vendor\SOIL\incs;vendor\SOIL\srcs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\entt\include;vendor\yaml-cpp\include;vendor\OpenAL-Soft\include;vendor\OpenAL-Soft\src;vendor\OpenAL-Soft\src\common;vendor\libogg\include;vendor\Vorbis\include;vendor\minimp3;vendor\SOIL\incs;vendor\SOIL\srcs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -131,10 +131,10 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>hzpch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>spiritpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLFW_INCLUDE_NONE;AL_LIBTYPE_STATIC;SPIRIT_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\entt\include;vendor\OpenAL-Soft\include;vendor\OpenAL-Soft\src;vendor\OpenAL-Soft\src\common;vendor\libogg\include;vendor\Vorbis\include;vendor\minimp3;vendor\SOIL\incs;vendor\SOIL\srcs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\entt\include;vendor\yaml-cpp\include;vendor\OpenAL-Soft\include;vendor\OpenAL-Soft\src;vendor\OpenAL-Soft\src\common;vendor\libogg\include;vendor\Vorbis\include;vendor\minimp3;vendor\SOIL\incs;vendor\SOIL\srcs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -146,7 +146,7 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLFW_INCLUDE_NONE;AL_LIBTYPE_STATIC;SPIRIT_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\entt\include;vendor\OpenAL-Soft\include;vendor\OpenAL-Soft\src;vendor\OpenAL-Soft\src\common;vendor\libogg\include;vendor\Vorbis\include;vendor\minimp3;vendor\SOIL\incs;vendor\SOIL\srcs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;vendor\entt\include;vendor\yaml-cpp\include;vendor\OpenAL-Soft\include;vendor\OpenAL-Soft\src;vendor\OpenAL-Soft\src\common;vendor\libogg\include;vendor\Vorbis\include;vendor\minimp3;vendor\SOIL\incs;vendor\SOIL\srcs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -171,6 +171,7 @@
     <ClInclude Include="src\SpiritEngine\Audio\SpiritAudio.h" />
     <ClInclude Include="src\SpiritEngine\Audio\alhelpers.h" />
     <ClInclude Include="src\SpiritEngine\Core\Application.h" />
+    <ClInclude Include="src\SpiritEngine\Core\Assert.h" />
     <ClInclude Include="src\SpiritEngine\Core\Base.h" />
     <ClInclude Include="src\SpiritEngine\Core\EntryPoint.h" />
     <ClInclude Include="src\SpiritEngine\Core\Input.h" />
@@ -179,6 +180,7 @@
     <ClInclude Include="src\SpiritEngine\Core\LayerStack.h" />
     <ClInclude Include="src\SpiritEngine\Core\Log.h" />
     <ClInclude Include="src\SpiritEngine\Core\MouseCodes.h" />
+    <ClInclude Include="src\SpiritEngine\Core\PlatformDetection.h" />
     <ClInclude Include="src\SpiritEngine\Core\Timestep.h" />
     <ClInclude Include="src\SpiritEngine\Core\Window.h" />
     <ClInclude Include="src\SpiritEngine\Debug\Instrumentor.h" />
@@ -204,8 +206,11 @@
     <ClInclude Include="src\SpiritEngine\Scene\Entity.h" />
     <ClInclude Include="src\SpiritEngine\Scene\Scene.h" />
     <ClInclude Include="src\SpiritEngine\Scene\SceneCamera.h" />
+    <ClInclude Include="src\SpiritEngine\Scene\SceneSerializer.h" />
     <ClInclude Include="src\SpiritEngine\Scene\ScriptableEntity.h" />
-    <ClInclude Include="src\hzpch.h" />
+    <ClInclude Include="src\SpiritEngine\Utility\Random.h" />
+    <ClInclude Include="src\SpiritEngine\Utils\PlatformUtils.h" />
+    <ClInclude Include="src\spiritpch.h" />
     <ClInclude Include="vendor\glm\glm\common.hpp" />
     <ClInclude Include="vendor\glm\glm\detail\_features.hpp" />
     <ClInclude Include="vendor\glm\glm\detail\_fixes.hpp" />
@@ -571,6 +576,7 @@
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Event.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLFramebuffer.cpp" />
@@ -579,9 +585,9 @@
     <ClCompile Include="src\Platform\OpenGL\OpenGLTexture.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
+    <ClCompile Include="src\Platform\Windows\WindowsPlatformUtils.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\SpiritEngine\Audio\SpiritAudio.cpp" />
-    <ClCompile Include="src\SpiritEngine\Audio\TextToSpeech\TTS.cpp" />
     <ClCompile Include="src\SpiritEngine\Audio\alhelpers.cpp" />
     <ClCompile Include="src\SpiritEngine\Core\Application.cpp" />
     <ClCompile Include="src\SpiritEngine\Core\Layer.cpp" />
@@ -590,7 +596,6 @@
     <ClCompile Include="src\SpiritEngine\Core\Window.cpp" />
     <ClCompile Include="src\SpiritEngine\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\SpiritEngine\ImGui\ImGuiLayer.cpp" />
-    <ClCompile Include="src\SpiritEngine\Random\Random.cpp" />
     <ClCompile Include="src\SpiritEngine\Renderer\Buffer.cpp" />
     <ClCompile Include="src\SpiritEngine\Renderer\Framebuffer.cpp" />
     <ClCompile Include="src\SpiritEngine\Renderer\GraphicsContext.cpp" />
@@ -606,7 +611,8 @@
     <ClCompile Include="src\SpiritEngine\Scene\Entity.cpp" />
     <ClCompile Include="src\SpiritEngine\Scene\Scene.cpp" />
     <ClCompile Include="src\SpiritEngine\Scene\SceneCamera.cpp" />
-    <ClCompile Include="src\hzpch.cpp">
+    <ClCompile Include="src\SpiritEngine\Scene\SceneSerializer.cpp" />
+    <ClCompile Include="src\spiritpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="vendor\stb_image\stb_image.cpp" />
@@ -629,6 +635,9 @@
     </ProjectReference>
     <ProjectReference Include="vendor\Vorbis\Vorbis.vcxproj">
       <Project>{DA7C93D8-C61E-BEAE-AFD9-D1029B1A45FF}</Project>
+    </ProjectReference>
+    <ProjectReference Include="vendor\yaml-cpp\yaml-cpp.vcxproj">
+      <Project>{88F1A057-74BE-FB62-9DD7-E90A890331F1}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

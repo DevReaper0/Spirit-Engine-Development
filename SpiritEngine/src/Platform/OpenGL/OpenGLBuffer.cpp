@@ -1,4 +1,4 @@
-#include "hzpch.h"
+#include "spiritpch.h"
 #include "Platform/OpenGL/OpenGLBuffer.h"
 
 #include <glad/glad.h>

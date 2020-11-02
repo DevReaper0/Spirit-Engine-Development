@@ -1,4 +1,4 @@
-#include "hzpch.h"
+#include "spiritpch.h"
 #include "SpiritEngine/Core/Layer.h"
 
 namespace SpiritEngine {

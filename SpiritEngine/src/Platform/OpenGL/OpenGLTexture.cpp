@@ -1,4 +1,4 @@
-#include "hzpch.h"
+#include "spiritpch.h"
 #include "Platform/OpenGL/OpenGLTexture.h"
 
 #include <stb_image.h>

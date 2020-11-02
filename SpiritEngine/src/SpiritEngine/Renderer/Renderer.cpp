@@ -1,4 +1,4 @@
-#include "hzpch.h"
+#include "spiritpch.h"
 #include "SpiritEngine/Renderer/Renderer.h"
 #include "SpiritEngine/Renderer/Renderer2D.h"
 
@@ -22,6 +22,7 @@ namespace SpiritEngine {
 	void Renderer::OnWindowResize(uint32_t width, uint32_t height)
 	{
 		RenderCommand::SetViewport(0, 0, width, height);
+		Renderer2D::SetViewport(width, height);
 	}
 
 	void Renderer::BeginScene(OrthographicCamera& camera)

@@ -2,8 +2,7 @@
 
 #include "Entity.h"
 
-namespace SpiritEngine
-{
+namespace SpiritEngine {
 
 	class ScriptableEntity
 	{
@@ -25,3 +24,4 @@ namespace SpiritEngine
 	};
 
 }
+

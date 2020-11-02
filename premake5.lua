@@ -25,6 +25,8 @@ IncludeDir["glm"] = "SpiritEngine/vendor/glm"
 IncludeDir["stb_image"] = "SpiritEngine/vendor/stb_image"
 IncludeDir["SFML"] = "SpiritEngine/vendor/SFML-2.5.1/include"
 IncludeDir["entt"] = "SpiritEngine/vendor/entt/include"
+IncludeDir["yaml_cpp"] = "%{wks.location}/SpiritEngine/vendor/yaml-cpp/include"
+--IncludeDir["rapidyaml"] = "%{wks.location}/SpiritEngine/vendor/rapidyaml/src"
 
 group "Dependencies"
 	include "SpiritEngine/vendor/GLFW"
@@ -32,7 +34,9 @@ group "Dependencies"
 	include "SpiritEngine/vendor/imgui"
 	include "SpiritEngine/vendor/OpenAL-Soft"
 	include "SpiritEngine/vendor/libogg"
-	include "SpiritEngine/vendor/Vorbis"--,
+	include "SpiritEngine/vendor/Vorbis"
+	include "SpiritEngine/vendor/yaml-cpp"
+	--include "SpiritEngine/vendor/rapidyaml"
 	--include "SpiritEngine/vendor/SOIL"
 	--include "SpiritEngine/vendor/AudioFile"
 group ""
@@ -47,8 +51,8 @@ project "SpiritEngine"
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
-	pchheader "hzpch.h"
-	pchsource "SpiritEngine/src/hzpch.cpp"
+	pchheader "spiritpch.h"
+	pchsource "SpiritEngine/src/spiritpch.cpp"
 
 	files
 	{
@@ -78,6 +82,8 @@ project "SpiritEngine"
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb_image}",
 		"%{IncludeDir.entt}",
+		"%{IncludeDir.yaml_cpp}",
+		--"%{IncludeDir.rapidyaml}",
 		"SpiritEngine/vendor/OpenAL-Soft/include",
 		"SpiritEngine/vendor/OpenAL-Soft/src",
 		"SpiritEngine/vendor/OpenAL-Soft/src/common",
@@ -96,12 +102,21 @@ project "SpiritEngine"
 		"ImGui",
 		"opengl32.lib",
 		"OpenAL-Soft",
-		"Vorbis"--,
+		"Vorbis",
+		"yaml-cpp",
+		--"rapidyaml"--,
 		--"SOIL"
 		--"AudioFile"
 	}
 
-	filter "system:windows"
+	filter "system:linux"
+		systemversion "latest"
+
+		defines
+		{
+		}
+	
+		filter "system:windows"
 		systemversion "latest"
 
 		defines
@@ -142,11 +157,25 @@ project "Sandbox"
 
 	includedirs
 	{
-		"SpiritEngine/vendor/spdlog/include",
-		"SpiritEngine/src",
-		"SpiritEngine/vendor",
+		"%{prj.name}/src",
+		"%{prj.name}/vendor/spdlog/include",
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.Glad}",
+		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.entt}"
+		"%{IncludeDir.stb_image}",
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.yaml_cpp}",
+		--"%{IncludeDir.rapidyaml}",
+		"SpiritEngine/vendor/OpenAL-Soft/include",
+		"SpiritEngine/vendor/OpenAL-Soft/src",
+		"SpiritEngine/vendor/OpenAL-Soft/src/common",
+		"SpiritEngine/vendor/libogg/include",
+		"SpiritEngine/vendor/Vorbis/include",
+		"SpiritEngine/vendor/minimp3",
+		"SpiritEngine/vendor/SOIL/incs",
+		"SpiritEngine/vendor/SOIL/srcs"
+		--"SpiritEngine/vendor/AudioFile"
 	}
 
 	links
@@ -154,6 +183,9 @@ project "Sandbox"
 		"SpiritEngine"
 	}
 
+	filter "system:linux"
+		systemversion "latest"
+	
 	filter "system:windows"
 		systemversion "latest"
 		

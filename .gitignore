@@ -7,6 +7,11 @@ bin-int/
 *.log
 *.spiritlog
 
+SpiritEngine.config
+SpiritEngine.creator
+SpiritEngine.files
+SpiritEngine.includes
+
 # Visual Studio files and folder
 .vs/
 **.sln

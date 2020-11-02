@@ -1,10 +1,13 @@
 #pragma once
 
+#include <unordered_map>
+
 #include "SpiritEngine/Renderer/Shader.h"
 #include <glm/glm.hpp>
 
 // TODO: REMOVE!
 typedef unsigned int GLenum;
+typedef int GLint;
 
 namespace SpiritEngine {
 
@@ -41,9 +44,11 @@ namespace SpiritEngine {
 		std::string ReadFile(const std::string& filepath);
 		std::unordered_map<GLenum, std::string> PreProcess(const std::string& source);
 		void Compile(const std::unordered_map<GLenum, std::string>& shaderSources);
+		GLint GetUniformLocation(const std::string& name) const;
 	private:
 		uint32_t m_RendererID;
 		std::string m_Name;
+		mutable std::unordered_map<std::string, GLint> m_UniformLocationCache;
 	};
 
 }

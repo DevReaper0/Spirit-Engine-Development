@@ -1,4 +1,4 @@
-#include "hzpch.h"
+#include "spiritpch.h"
 #include "SpiritEngine/Core/Application.h"
 
 #include "SpiritEngine/Core/Log.h"
@@ -8,6 +8,7 @@
 #include "SpiritEngine/Core/Input.h"
 
 #include <GLFW/glfw3.h>
+#include <filesystem>
 
 namespace SpiritEngine {
 
@@ -20,7 +21,7 @@ namespace SpiritEngine {
 		SPIRIT_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
 		m_Window = Window::Create(WindowProps(name));
-		m_Window->SetEventCallback(SPIRIT_BIND_EVENT_FN(Application::OnEvent));
+		m_Window->SetEventCallback(SPIRIT_BIND_EVENT_FN(OnEvent));
 
 		Renderer::Init();
 
@@ -61,8 +62,8 @@ namespace SpiritEngine {
 		SPIRIT_PROFILE_FUNCTION();
 
 		EventDispatcher dispatcher(e);
-		dispatcher.Dispatch<WindowCloseEvent>(SPIRIT_BIND_EVENT_FN(Application::OnWindowClose));
-		dispatcher.Dispatch<WindowResizeEvent>(SPIRIT_BIND_EVENT_FN(Application::OnWindowResize));
+		dispatcher.Dispatch<WindowCloseEvent>(SPIRIT_BIND_EVENT_FN(OnWindowClose));
+		dispatcher.Dispatch<WindowResizeEvent>(SPIRIT_BIND_EVENT_FN(OnWindowResize));
 
 		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it)
 		{
@@ -72,14 +73,24 @@ namespace SpiritEngine {
 		}
 	}
 
+	void Application::OnCustomEvent(CustomEvent& e)
+	{
+		SPIRIT_PROFILE_FUNCTION();
+
+		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it)
+		{
+			if (e.Handled)
+				break;
+			(*it)->OnCustomEvent(e);
+		}
+	}
+
 	void Application::Run()
 	{
 		SPIRIT_PROFILE_FUNCTION();
 
 		while (m_Running)
 		{
-
-
 			SPIRIT_PROFILE_SCOPE("RunLoop");
 
 			float time = (float)glfwGetTime();
@@ -104,6 +115,8 @@ namespace SpiritEngine {
 				}
 				m_ImGuiLayer->End();
 			}
+
+			Input::OnUpdate();
 
 			m_Window->OnUpdate();
 		}

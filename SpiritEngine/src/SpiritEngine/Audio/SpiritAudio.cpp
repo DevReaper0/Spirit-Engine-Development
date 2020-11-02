@@ -1,4 +1,4 @@
-#include "hzpch.h"
+#include "spiritpch.h"
 
 #include "SpiritAudio.h"
 #include <stdio.h>

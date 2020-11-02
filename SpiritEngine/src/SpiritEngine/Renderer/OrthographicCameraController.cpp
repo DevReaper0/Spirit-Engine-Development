@@ -1,4 +1,4 @@
-#include "hzpch.h"
+#include "spiritpch.h"
 #include "SpiritEngine/Renderer/OrthographicCameraController.h"
 
 #include "SpiritEngine/Core/Input.h"
@@ -7,7 +7,7 @@
 namespace SpiritEngine {
 
 	OrthographicCameraController::OrthographicCameraController(float aspectRatio, bool rotation)
-		: m_AspectRatio(aspectRatio), m_Bounds({ -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel }), m_Camera(m_Bounds.Left, m_Bounds.Right, m_Bounds.Bottom, m_Bounds.Top), m_Rotation(rotation)
+		: m_AspectRatio(aspectRatio), m_Camera(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel), m_Rotation(rotation)
 	{
 	}
 
@@ -15,51 +15,34 @@ namespace SpiritEngine {
 	{
 		SPIRIT_PROFILE_FUNCTION();
 
-		if (Input::IsKeyPressed(SPIRIT_KEY_A) || Input::IsKeyPressed(SPIRIT_KEY_LEFT))
+		if (Input::IsKeyPressed(Key::A))
 		{
 			m_CameraPosition.x -= cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
 			m_CameraPosition.y -= sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
 		}
-		else if (Input::IsKeyPressed(SPIRIT_KEY_D) || Input::IsKeyPressed(SPIRIT_KEY_RIGHT))
+		else if (Input::IsKeyPressed(Key::D))
 		{
 			m_CameraPosition.x += cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
 			m_CameraPosition.y += sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
 		}
 
-		if (Input::IsKeyPressed(SPIRIT_KEY_W) || Input::IsKeyPressed(SPIRIT_KEY_UP))
+		if (Input::IsKeyPressed(Key::W))
 		{
 			m_CameraPosition.x += -sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
 			m_CameraPosition.y += cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
 		}
-		else if (Input::IsKeyPressed(SPIRIT_KEY_S) || Input::IsKeyPressed(SPIRIT_KEY_DOWN))
+		else if (Input::IsKeyPressed(Key::S))
 		{
 			m_CameraPosition.x -= -sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
 			m_CameraPosition.y -= cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
 		}
-		else if (Input::IsKeyPressed(SPIRIT_KEY_Z))
-		{
-			m_CameraPosition.x = 0;
-			m_CameraPosition.y = 0;
-			m_CameraPosition.z = 0;
-		}
-
-		if (Input::IsKeyPressed(SPIRIT_KEY_X))
-		{
-			if(m_Rotation)
-				m_CameraRotation = 0;
-			m_CameraPosition.x = 0;
-			m_CameraPosition.y = 0;
-			m_CameraPosition.z = 0;
-		}
 
 		if (m_Rotation)
 		{
-			if (Input::IsKeyPressed(SPIRIT_KEY_Q))
+			if (Input::IsKeyPressed(Key::Q))
 				m_CameraRotation += m_CameraRotationSpeed * ts;
-			if (Input::IsKeyPressed(SPIRIT_KEY_E))
+			if (Input::IsKeyPressed(Key::E))
 				m_CameraRotation -= m_CameraRotationSpeed * ts;
-			if (Input::IsKeyPressed(SPIRIT_KEY_C))
-				m_CameraRotation = 0;
 
 			if (m_CameraRotation > 180.0f)
 				m_CameraRotation -= 360.0f;
@@ -71,16 +54,18 @@ namespace SpiritEngine {
 
 		m_Camera.SetPosition(m_CameraPosition);
 
-		m_CameraTranslationSpeed = m_ZoomLevel;
+		//m_CameraTranslationSpeed = m_ZoomLevel;
+	}
 
-		if (Input::IsKeyPressed(SPIRIT_KEY_R) && !Input::IsKeyPressed(SPIRIT_KEY_LEFT_SHIFT))
-		{
-			m_Rotation = false;
-		}
-		else if (Input::IsKeyPressed(SPIRIT_KEY_R) && Input::IsKeyPressed(SPIRIT_KEY_LEFT_SHIFT))
-		{
-			m_Rotation = true;
-		}
+	void OrthographicCameraController::SetZoomLevel(float level)
+	{
+		SPIRIT_CORE_ASSERT(level > 0.0f, "Zoom Level has to be higher than 0.0f!");
+
+		// translation speed should scale relative to the zoom level changes;
+		float diff = level / m_ZoomLevel; // zoom in -> fast translation, zoom out -> slow translation;
+		m_CameraTranslationSpeed *= diff;
+		m_ZoomLevel = level;
+		UpdateProjectionMatrix();
 	}
 
 	void OrthographicCameraController::OnEvent(Event& e)
@@ -95,20 +80,26 @@ namespace SpiritEngine {
 	void OrthographicCameraController::OnResize(float width, float height)
 	{
 		m_AspectRatio = width / height;
-		m_Bounds = { -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel };
-		//m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
-		m_Camera.SetProjection(m_Bounds.Left, m_Bounds.Right, m_Bounds.Bottom, m_Bounds.Top);
+		UpdateProjectionMatrix();
 	}
 
 	bool OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent& e)
 	{
 		SPIRIT_PROFILE_FUNCTION();
 
-		m_ZoomLevel -= e.GetYOffset() * 0.25f;
-		m_ZoomLevel = std::max(m_ZoomLevel, 0.25f);
-		m_Bounds = { -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel };
-		//m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
-		m_Camera.SetProjection(m_Bounds.Left, m_Bounds.Right, m_Bounds.Bottom, m_Bounds.Top);
+		float zoomLevel = m_ZoomLevel - e.GetYOffset() * m_ZoomSpeed;
+		/* Spirit Engine's current "Zoom Level" definition makes std::clamp confuses:
+		 *   - 0.25f Zoom Level -> 4x magnification
+		 *   - 2.0f Zoom Level -> 0.5x magnification
+		 * so the min and max value of "Zoom Level" and "Magnification Level" is the invertion of each other.
+		 * If we set MaxZoomLevel to 0.25f (4x) and MinZoomLevel to 2.0f (0.5x) then the user will confuses
+		 * "why Max is smaller than Min??".
+		 *
+		 * Suggestion: Changing the definition to "Magnification Level".
+		 */
+		zoomLevel = std::clamp(zoomLevel, m_MinZoomLevel, m_MaxZoomLevel);
+		SetZoomLevel(zoomLevel);
+		UpdateProjectionMatrix();
 		return false;
 	}
 

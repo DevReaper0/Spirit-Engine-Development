@@ -28,6 +28,10 @@ namespace SpiritEngine {
 
 		void PlayMusic();
 		void RenameAudio(std::string oldName = "assets/audio/BackgroundMusic", std::string oldFormat = ".mp3", std::string newName = "assets/audio/BackgroundMusic", std::string newFormat = ".spiritaudio");
+		bool OnKeyPressed(KeyPressedEvent& e);
+		void NewScene();
+		void OpenScene();
+		void SaveSceneAs();
 	private:
 		SpiritEngine::OrthographicCameraController m_CameraController;
 

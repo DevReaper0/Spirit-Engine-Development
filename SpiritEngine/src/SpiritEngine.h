@@ -17,6 +17,8 @@
 
 #include "SpiritEngine/ImGui/ImGuiLayer.h"
 
+#include "SpiritEngine/Utility/Random.h"
+
 #include "SpiritEngine/Scene/Scene.h"
 #include "SpiritEngine/Scene/Entity.h"
 #include "SpiritEngine/Scene/Components.h"

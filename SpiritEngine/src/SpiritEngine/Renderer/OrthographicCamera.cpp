@@ -1,4 +1,4 @@
-#include "hzpch.h"
+#include "spiritpch.h"
 #include "SpiritEngine/Renderer/OrthographicCamera.h"
 
 #include <glm/gtc/matrix_transform.hpp>

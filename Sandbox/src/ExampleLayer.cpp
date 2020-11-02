@@ -128,6 +128,19 @@ ExampleLayer::ExampleLayer()
 	textureShader->SetInt("u_Texture", 0);
 }
 
+bool ExampleLayer::OnTestEvent(TestEvent& e)
+{
+	SPIRIT_INFO("Player killed!");
+	return true;
+}
+
+void ExampleLayer::OnCustomEvent(SpiritEngine::CustomEvent& e)
+{
+	SpiritEngine::CustomEventDispatcher dispatcher(e);
+
+	dispatcher.Dispatch<TestEvent>(SPIRIT_BIND_EVENT_FN(ExampleLayer::OnTestEvent));
+}
+
 void ExampleLayer::OnAttach()
 {
 }
@@ -138,6 +151,12 @@ void ExampleLayer::OnDetach()
 
 void ExampleLayer::OnUpdate(SpiritEngine::Timestep ts) 
 {
+	if (SpiritEngine::Input::IsKeyPressed(SpiritEngine::Key::Q))
+	{
+		TestEvent e;
+		OnCustomEvent(e);
+	}
+
 	// Update
 	m_CameraController.OnUpdate(ts);
 

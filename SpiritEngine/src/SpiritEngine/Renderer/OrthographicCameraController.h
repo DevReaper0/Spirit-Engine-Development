@@ -8,19 +8,10 @@
 
 namespace SpiritEngine {
 
-	struct OrthographicCameraBounds
-	{
-		float Left, Right;
-		float Bottom, Top;
-
-		float GetWidth() { return Right - Left; }
-		float GetHeight() { return Top - Bottom; }
-	};
-
 	class OrthographicCameraController
 	{
 	public:
-		OrthographicCameraController(float aspectRatio, bool rotation = true);
+		OrthographicCameraController(float aspectRatio, bool rotation = false);
 
 		void OnUpdate(Timestep ts);
 		void OnEvent(Event& e);
@@ -31,23 +22,35 @@ namespace SpiritEngine {
 		const OrthographicCamera& GetCamera() const { return m_Camera; }
 
 		float GetZoomLevel() const { return m_ZoomLevel; }
-		void SetZoomLevel(float level) { m_ZoomLevel = level; }
+		/* Setting zoom level using this function will override min/max zoom level. */
+		void SetZoomLevel(float level);
 
-		const OrthographicCameraBounds& GetBounds() const { return m_Bounds; }
+		float GetMagnificationZoomLevel() const { return 1.0f / m_ZoomLevel; }
+		void SetMagnificationZoomLevel(float magnificationLevel) { if (magnificationLevel != 0.0f) SetZoomLevel(1.0f / magnificationLevel); }
+
+		bool IsRotationEnabled() const { return m_Rotation; }
+		void SetEnableRotation(bool enabled) { m_Rotation = enabled; }
 	private:
 		bool OnMouseScrolled(MouseScrolledEvent& e);
 		bool OnWindowResized(WindowResizeEvent& e);
+		void UpdateProjectionMatrix() { m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel); }
 	private:
 		float m_AspectRatio;
 		float m_ZoomLevel = 1.0f;
-		OrthographicCamera m_Camera;
-		OrthographicCameraBounds m_Bounds;
-
-		bool m_Rotation = true;
+		
+		bool m_Rotation;
 
 		glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
 		float m_CameraRotation = 0.0f; //In degrees, in the anti-clockwise direction
-		float m_CameraTranslationSpeed = 5.0f, m_CameraRotationSpeed = 180.0f;
+
+		OrthographicCamera m_Camera;
+
+		// TODO: add helper function to get/set those values, or public them;
+		float m_CameraTranslationSpeed = 2.0f;
+		float m_CameraRotationSpeed = 180.0f; //Also in degrees, in the anti-clockwise direction
+		float m_ZoomSpeed = 0.25f;
+		float m_MaxZoomLevel = 2.0f;
+		float m_MinZoomLevel = 0.25f;
 	};
 
 }

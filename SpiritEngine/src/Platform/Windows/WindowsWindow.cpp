@@ -1,4 +1,4 @@
-#include "hzpch.h"
+#include "spiritpch.h"
 #include "Platform/Windows/WindowsWindow.h"
 
 #include "SpiritEngine/Core/Input.h"
@@ -10,8 +10,11 @@
 #include "SpiritEngine/Renderer/Renderer.h"
 
 #include "Platform/OpenGL/OpenGLContext.h"
+//#define HighDPIMonitor
 
 namespace SpiritEngine {
+
+	float Window::s_HighDPIScaleFactor = 1.0f;
 	
 	static uint8_t s_GLFWWindowCount = 0;
 
@@ -63,6 +66,19 @@ namespace SpiritEngine {
 
 		{
 			SPIRIT_PROFILE_SCOPE("glfwCreateWindow");
+
+			GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+			float xscale, yscale;
+			glfwGetMonitorContentScale(monitor, &xscale, &yscale);
+
+#ifdef HighDPIMonitor
+			if (xscale > 1.0f || yscale > 1.0f)
+			{
+				s_HighDPIScaleFactor = xscale;
+				glfwWindowHint(GLFW_SCALE_TO_MONITOR, GLFW_TRUE);
+			}
+#endif
+
 		#if defined(SPIRIT_DEBUG)
 			if (Renderer::GetAPI() == RendererAPI::API::OpenGL)
 				glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
@@ -98,6 +114,10 @@ namespace SpiritEngine {
 		glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
 		{
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+
+#ifdef Non-QWERTY
+			key = int(Input::GetCrossLayoutKey(KeyCode(key)));
+#endif
 
 			switch (action)
 			{

@@ -28,7 +28,7 @@
  * finding an appropriate buffer format, and getting readable strings for
  * channel configs and sample types. */
 
-#include "hzpch.h"
+#include "spiritpch.h"
 
 #include "alhelpers.h"
 

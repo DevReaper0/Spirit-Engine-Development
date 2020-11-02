@@ -1,5 +1,5 @@
-#include "hzpch.h"
-#include "Framebuffer.h"
+#include "spiritpch.h"
+#include "SpiritEngine/Renderer/Framebuffer.h"
 
 #include "SpiritEngine/Renderer/Renderer.h"
 

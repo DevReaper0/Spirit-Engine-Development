@@ -22,6 +22,7 @@ namespace SpiritEngine {
 		virtual ~Application();
 
 		void OnEvent(Event& e);
+		void OnCustomEvent(CustomEvent& e);
 
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* layer);

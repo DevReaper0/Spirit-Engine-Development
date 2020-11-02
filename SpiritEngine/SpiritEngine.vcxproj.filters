@@ -19,9 +19,6 @@
     <Filter Include="src\SpiritEngine\Audio">
       <UniqueIdentifier>{6ECD3AFE-5AC7-6350-4334-FA602FCDC9BC}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\SpiritEngine\Audio\TextToSpeech">
-      <UniqueIdentifier>{7D044B4D-E9BD-B5F7-721D-D0D1DED56B67}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\SpiritEngine\Core">
       <UniqueIdentifier>{25AA864D-9116-4248-5A0A-DAA5C63564B0}</UniqueIdentifier>
     </Filter>
@@ -34,14 +31,17 @@
     <Filter Include="src\SpiritEngine\ImGui">
       <UniqueIdentifier>{97B4C6FE-83AE-EF50-6C1B-866158B455BD}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\SpiritEngine\Random">
-      <UniqueIdentifier>{BDAAD7EB-29E2-1F83-32EC-83A69EA2467C}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\SpiritEngine\Renderer">
       <UniqueIdentifier>{F3E75074-5FAA-84FE-A85A-138B145C5DDC}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\SpiritEngine\Scene">
       <UniqueIdentifier>{8AAC76FF-76A6-9F51-5F13-36624BAC05BE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\SpiritEngine\Utility">
+      <UniqueIdentifier>{F08CB779-DCB1-06FA-05FD-EB89F1800518}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\SpiritEngine\Utils">
+      <UniqueIdentifier>{CD40A4FF-B93A-CD51-A2A7-63628E4033BE}</UniqueIdentifier>
     </Filter>
     <Filter Include="vendor">
       <UniqueIdentifier>{B3738122-9F15-ACF8-88D0-BF4C74113349}</UniqueIdentifier>
@@ -105,6 +105,9 @@
     <ClInclude Include="src\SpiritEngine\Core\Application.h">
       <Filter>src\SpiritEngine\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\SpiritEngine\Core\Assert.h">
+      <Filter>src\SpiritEngine\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\SpiritEngine\Core\Base.h">
       <Filter>src\SpiritEngine\Core</Filter>
     </ClInclude>
@@ -127,6 +130,9 @@
       <Filter>src\SpiritEngine\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\SpiritEngine\Core\MouseCodes.h">
+      <Filter>src\SpiritEngine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SpiritEngine\Core\PlatformDetection.h">
       <Filter>src\SpiritEngine\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\SpiritEngine\Core\Timestep.h">
@@ -204,10 +210,19 @@
     <ClInclude Include="src\SpiritEngine\Scene\SceneCamera.h">
       <Filter>src\SpiritEngine\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="src\SpiritEngine\Scene\SceneSerializer.h">
+      <Filter>src\SpiritEngine\Scene</Filter>
+    </ClInclude>
     <ClInclude Include="src\SpiritEngine\Scene\ScriptableEntity.h">
       <Filter>src\SpiritEngine\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="src\hzpch.h">
+    <ClInclude Include="src\SpiritEngine\Utility\Random.h">
+      <Filter>src\SpiritEngine\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SpiritEngine\Utils\PlatformUtils.h">
+      <Filter>src\SpiritEngine\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\spiritpch.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="vendor\glm\glm\common.hpp">
@@ -1325,14 +1340,14 @@
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
       <Filter>src\Platform\Windows</Filter>
     </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsPlatformUtils.cpp">
+      <Filter>src\Platform\Windows</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
       <Filter>src\Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\SpiritEngine\Audio\SpiritAudio.cpp">
       <Filter>src\SpiritEngine\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="src\SpiritEngine\Audio\TextToSpeech\TTS.cpp">
-      <Filter>src\SpiritEngine\Audio\TextToSpeech</Filter>
     </ClCompile>
     <ClCompile Include="src\SpiritEngine\Audio\alhelpers.cpp">
       <Filter>src\SpiritEngine\Audio</Filter>
@@ -1357,9 +1372,6 @@
     </ClCompile>
     <ClCompile Include="src\SpiritEngine\ImGui\ImGuiLayer.cpp">
       <Filter>src\SpiritEngine\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="src\SpiritEngine\Random\Random.cpp">
-      <Filter>src\SpiritEngine\Random</Filter>
     </ClCompile>
     <ClCompile Include="src\SpiritEngine\Renderer\Buffer.cpp">
       <Filter>src\SpiritEngine\Renderer</Filter>
@@ -1406,11 +1418,17 @@
     <ClCompile Include="src\SpiritEngine\Scene\SceneCamera.cpp">
       <Filter>src\SpiritEngine\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="src\hzpch.cpp">
+    <ClCompile Include="src\SpiritEngine\Scene\SceneSerializer.cpp">
+      <Filter>src\SpiritEngine\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\spiritpch.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
+    </ClCompile>
+    <ClCompile Include="Event.cpp">
+      <Filter>src\SpiritEngine\Events</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
