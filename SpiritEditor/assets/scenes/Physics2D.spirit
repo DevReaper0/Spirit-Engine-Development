@@ -1,0 +1,216 @@
+Scene: Untitled
+Entities:
+  - Entity: 13397625375498510820
+    TagComponent:
+      Name: Yellow Square
+      Tag: Entity
+    TransformComponent:
+      Translation: [-6.62536907, 1.04115355, -1.19209318e-07]
+      Rotation: [0, 0, -0.349594772]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 0, 1]
+      TextureUVOffset: [0, 0]
+      TilingFactor: 1
+    Rigidbody2DComponent:
+      BodyType: Dynamic
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0
+      Restitution: 0.230000004
+      RestitutionThreshold: 0.829999983
+  - Entity: 7217365304086855118
+    TagComponent:
+      Name: Yellow Square
+      Tag: Entity
+    TransformComponent:
+      Translation: [7.63128281, 2.78732204, 0]
+      Rotation: [0, 0, 0.237997815]
+      Scale: [0.999999881, 0.999999881, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 0, 1]
+      TextureUVOffset: [0, 0]
+      TilingFactor: 1
+    Rigidbody2DComponent:
+      BodyType: Dynamic
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0
+      Restitution: 0.230000004
+      RestitutionThreshold: 0.829999983
+  - Entity: 15465718984870679345
+    TagComponent:
+      Name: Yellow Circle
+      Tag: Entity
+    TransformComponent:
+      Translation: [-0.865643382, 7.06304169, -0.158345342]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CircleRendererComponent:
+      Color: [1, 1, 0, 1]
+      Thickness: 1
+      Fade: 0.00499999989
+    Rigidbody2DComponent:
+      BodyType: Dynamic
+      FixedRotation: false
+    CircleCollider2DComponent:
+      Offset: [0, 0]
+      Radius: 0.5
+      Density: 1
+      Friction: 0
+      Restitution: 0.230000004
+      RestitutionThreshold: 0.829999983
+  - Entity: 18072925296768818687
+    TagComponent:
+      Name: Floor
+      Tag: Entity
+    TransformComponent:
+      Translation: [1.49011612e-08, -3.86652088, 0]
+      Rotation: [0, 0, 0]
+      Scale: [22.743515, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      TextureUVOffset: [0, 0]
+      TilingFactor: 1
+    Rigidbody2DComponent:
+      BodyType: Static
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 16494156715582372589
+    TagComponent:
+      Name: Camera
+      Tag: Entity
+    TransformComponent:
+      Translation: [0, 4.19999981, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 1
+        PerspectiveFOV: 0.785398185
+        PerspectiveNear: 0.00999999978
+        PerspectiveFar: 1000
+        OrthographicSize: 20
+        OrthographicNear: -1
+        OrthographicFar: 1
+      Primary: true
+      FixedAspectRatio: false
+  - Entity: 18251304085656386084
+    TagComponent:
+      Name: Red Square
+      Tag: Entity
+    TransformComponent:
+      Translation: [-1.55438471, 3.69479895, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 0, 0, 1]
+      TextureUVOffset: [0, 0]
+      TilingFactor: 1
+    Rigidbody2DComponent:
+      BodyType: Dynamic
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.340000004
+      Restitution: 0.280000001
+      RestitutionThreshold: 0.800000012
+  - Entity: 10084653232230846720
+    TagComponent:
+      Name: Green Square
+      Tag: Entity
+    TransformComponent:
+      Translation: [-0.797347724, 8.96211529, 0]
+      Rotation: [0, 0, 0.898163617]
+      Scale: [0.999999821, 0.999999821, 1]
+    SpriteRendererComponent:
+      Color: [0, 1, 0, 1]
+      TextureUVOffset: [0, 0]
+      TilingFactor: 1
+    Rigidbody2DComponent:
+      BodyType: Dynamic
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0
+      Restitution: 1
+      RestitutionThreshold: 3.48000002
+  - Entity: 3489177678489249116
+    TagComponent:
+      Name: Right Wall
+      Tag: Entity
+    TransformComponent:
+      Translation: [10.8711395, 4.57000017, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 17.8299999, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      TextureUVOffset: [0, 0]
+      TilingFactor: 1
+    Rigidbody2DComponent:
+      BodyType: Static
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 13313927163394074768
+    TagComponent:
+      Name: Left Wall
+      Tag: Entity
+    TransformComponent:
+      Translation: [-10.8716764, 4.56982803, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 17.8296757, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      TextureUVOffset: [0, 0]
+      TilingFactor: 1
+    Rigidbody2DComponent:
+      BodyType: Static
+      FixedRotation: false
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5
+  - Entity: 1299164089640670705
+    TagComponent:
+      Name: Ceiling
+      Tag: Entity
+    TransformComponent:
+      Translation: [0, 13.0153627, 0]
+      Rotation: [0, 0, 0]
+      Scale: [22.7399998, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      TextureUVOffset: [0, 0]
+      TilingFactor: 1
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.5, 0.5]
+      Density: 1
+      Friction: 0.5
+      Restitution: 0
+      RestitutionThreshold: 0.5

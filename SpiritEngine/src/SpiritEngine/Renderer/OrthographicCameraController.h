@@ -28,8 +28,8 @@ namespace SpiritEngine {
 		float GetMagnificationZoomLevel() const { return 1.0f / m_ZoomLevel; }
 		void SetMagnificationZoomLevel(float magnificationLevel) { if (magnificationLevel != 0.0f) SetZoomLevel(1.0f / magnificationLevel); }
 
-		bool IsRotationEnabled() const { return m_Rotation; }
-		void SetEnableRotation(bool enabled) { m_Rotation = enabled; }
+		bool IsRotationEnabled() const { return m_EnableRotation; }
+		void SetEnableRotation(bool enabled) { m_EnableRotation = enabled; }
 	private:
 		bool OnMouseScrolled(MouseScrolledEvent& e);
 		bool OnWindowResized(WindowResizeEvent& e);
@@ -38,7 +38,7 @@ namespace SpiritEngine {
 		float m_AspectRatio;
 		float m_ZoomLevel = 1.0f;
 		
-		bool m_Rotation;
+		bool m_EnableRotation;
 
 		glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
 		float m_CameraRotation = 0.0f; //In degrees, in the anti-clockwise direction

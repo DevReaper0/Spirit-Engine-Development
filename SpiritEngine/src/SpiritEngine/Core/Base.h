@@ -1,8 +1,8 @@
 #pragma once
 
-#include <memory>
-
 #include "SpiritEngine/Core/PlatformDetection.h"
+
+#include <memory>
 
 #ifdef SPIRIT_DEBUG
 	#if defined(SPIRIT_PLATFORM_WINDOWS)

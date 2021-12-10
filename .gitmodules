@@ -19,4 +19,9 @@
 [submodule "SpiritEngine/vendor/yaml-cpp"]
 	path = SpiritEngine/vendor/yaml-cpp
 	url = https://github.com/TheCherno/yaml-cpp.git
-	
+[submodule "SpiritEngine/vendor/ImGuizmo"]
+	path = SpiritEngine/vendor/ImGuizmo
+	url = https://github.com/thecherno/imguizmo
+[submodule "SpiritEngine/vendor/Box2D"]
+	path = SpiritEngine/vendor/Box2D
+	url = https://github.com/TheCherno/box2d

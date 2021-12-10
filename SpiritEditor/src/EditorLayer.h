@@ -1,10 +1,14 @@
 #pragma once
 
 #include <SpiritEngine.h>
-#include "../entt/include/entt.hpp"
+#include "entt.hpp"
 #include "Panels/SceneHierarchyPanel.h"
+#include "Panels/ContentBrowserPanel.h"
 
-namespace SpiritEngine {
+#include "SpiritEngine/Renderer/EditorCamera.h"
+
+namespace SpiritEngine
+{
 
 	class EditorLayer : public Layer
 	{
@@ -19,19 +23,25 @@ namespace SpiritEngine {
 		virtual void OnImGuiRender() override;
 		void OnEvent(Event& e) override;
 
-		bool is3D = false;
-		bool isConsole = false;
-		void Make3D();
-		void Make2D();
-		void MakeConsole();
-
-
-		void PlayMusic();
-		void RenameAudio(std::string oldName = "assets/audio/BackgroundMusic", std::string oldFormat = ".mp3", std::string newName = "assets/audio/BackgroundMusic", std::string newFormat = ".spiritaudio");
 		bool OnKeyPressed(KeyPressedEvent& e);
+		bool OnMouseButtonPressed(MouseButtonPressedEvent& e);
+
+		void OnOverlayRender();
+
 		void NewScene();
 		void OpenScene();
+		void OpenScene(const std::filesystem::path& path);
+		void SaveScene();
 		void SaveSceneAs();
+
+		void OnScenePlay();
+		void OnSceneStop();
+
+		void DuplicateSelectedEntity();
+		void DeleteSelectedEntity();
+
+		// UI Panels
+		void UI_Toolbar();
 	private:
 		SpiritEngine::OrthographicCameraController m_CameraController;
 
@@ -39,23 +49,45 @@ namespace SpiritEngine {
 		Ref<VertexArray> m_SquareVA;
 		Ref<Shader> m_FlatColorShader;
 		Ref<Framebuffer> m_Framebuffer;
+		Ref<Framebuffer> m_IDFramebuffer;
 
 		Ref<Scene> m_ActiveScene;
+		std::string m_ActiveSceneFilePath = "";
+		Ref<Scene> m_EditorScene, m_RuntimeScene;
 		Entity m_SquareEntity;
 		Entity m_CameraEntity;
 		Entity m_SecondCamera;
 
+		Entity m_HoveredEntity;
+
 		bool m_PrimaryCamera = true;
+
+		EditorCamera m_EditorCamera;
 
 		Ref<Texture2D> m_CheckerboardTexture;
 
 		bool m_ViewportFocused = false, m_ViewportHovered = false;
 		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
+		glm::vec2 m_ViewportBounds[2];
 
 		glm::vec4 m_SquareColor = { 0.2f, 0.3f, 0.8f, 1.0f };
 
+		int m_GizmoType = -1;
+
+		bool m_ShowPhysicsColliders = false;
+
+		enum class SceneState
+		{
+			Edit = 0, Play = 1
+		};
+		SceneState m_SceneState = SceneState::Edit;
+
 		// Panels
 		SceneHierarchyPanel m_SceneHierarchyPanel;
+		ContentBrowserPanel m_ContentBrowserPanel;
+
+		// Editor resources
+		Ref<Texture2D> m_IconPlay, m_IconStop;
 	};
 
 }

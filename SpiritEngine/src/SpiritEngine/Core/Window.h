@@ -1,9 +1,9 @@
 #pragma once
 
-#include <sstream>
-
 #include "SpiritEngine/Core/Base.h"
 #include "SpiritEngine/Events/Event.h"
+
+#include <sstream>
 
 namespace SpiritEngine {
 

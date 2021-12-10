@@ -26,6 +26,7 @@
 // ---Renderer------------------------
 #include "SpiritEngine/Renderer/Renderer.h"
 #include "SpiritEngine/Renderer/Renderer2D.h"
+#include "SpiritEngine/Renderer/Renderer3D.h"
 #include "SpiritEngine/Renderer/RenderCommand.h"
 
 #include "SpiritEngine/Renderer/Buffer.h"

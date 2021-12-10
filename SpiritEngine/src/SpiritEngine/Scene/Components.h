@@ -1,13 +1,26 @@
 #pragma once
 
+#include "SpiritEngine/Core/UUID.h"
+#include "SpiritEngine/Renderer/Texture.h"
+#include "SceneCamera.h"
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "SceneCamera.h"
-#include "ScriptableEntity.h"
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/quaternion.hpp>
 
 namespace SpiritEngine {
 
+	struct IDComponent
+	{
+		UUID ID;
+
+		IDComponent() = default;
+		IDComponent(const IDComponent&) = default;
+	};
+
+	
 	struct TagComponent
 	{
 		std::string Name;
@@ -15,18 +28,15 @@ namespace SpiritEngine {
 
 		TagComponent() = default;
 		TagComponent(const TagComponent&) = default;
-		TagComponent(const std::string& name, const std::string& tag="")
+		TagComponent(const std::string& name, const std::string& tag= std::string())
 			: Name(name), Tag(tag) {}
 	};
 
 	struct TransformComponent
 	{
-		glm::vec3 OriginalTranslation = { 0.0f, 0.0f, 0.0f };
-		glm::vec3 Translation = OriginalTranslation;
-		glm::vec3 OriginalRotation = { 0.0f, 0.0f, 0.0f };
-		glm::vec3 Rotation = OriginalRotation;
-		glm::vec3 OriginalScale = { 1.0f, 1.0f, 1.0f };
-		glm::vec3 Scale = OriginalScale;
+		glm::vec3 Translation = { 0.0f, 0.0f, 0.0f };
+		glm::vec3 Rotation = { 0.0f, 0.0f, 0.0f };
+		glm::vec3 Scale = { 1.0f, 1.0f, 1.0f };
 
 		TransformComponent() = default;
 		TransformComponent(const TransformComponent&) = default;
@@ -35,9 +45,7 @@ namespace SpiritEngine {
 
 		glm::mat4 GetTransform() const
 		{
-			glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), Rotation.x, { 1, 0, 0 })
-				* glm::rotate(glm::mat4(1.0f), Rotation.y, { 0, 1, 0 })
-				* glm::rotate(glm::mat4(1.0f), Rotation.z, { 0, 0, 1 });
+			glm::mat4 rotation = glm::toMat4(glm::quat(Rotation));
 
 			return glm::translate(glm::mat4(1.0f), Translation)
 				* rotation
@@ -47,51 +55,60 @@ namespace SpiritEngine {
 
 	struct SpriteRendererComponent
 	{
-		glm::vec4 OriginalColor{ 1.0f, 1.0f, 1.0f, 1.0f };
-		glm::vec4 Color = OriginalColor;
-
-		std::string OriginalShape = "Square";
-		std::string Shape = OriginalShape;
+		glm::vec4 Color{ 1.0f, 1.0f, 1.0f, 1.0f };
+		glm::vec2 TextureUVOffset = glm::vec2(0.0f);
+		Ref<Texture2D> Texture;
+		float TilingFactor = 1.0f;
 
 		SpriteRendererComponent() = default;
 		SpriteRendererComponent(const SpriteRendererComponent&) = default;
-		SpriteRendererComponent(const glm::vec4& color, const std::string shape = "Square")
-			: Color(color), Shape(shape) {}
+		SpriteRendererComponent(const glm::vec4& color)
+			: Color(color) {}
 	};
 
-	struct LineRendererComponent
+	struct CircleRendererComponent
 	{
-		glm::vec4 OriginalColor{ 1.0f, 1.0f, 1.0f, 1.0f };
-		glm::vec4 Color = OriginalColor;
-		float OriginalWidth = 1.0f;
-		float Width = OriginalWidth;
+		glm::vec4 Color{ 1.0f, 1.0f, 1.0f, 1.0f };
+		float Thickness = 1.0f;
+		float Fade = 0.005f;
 
-		LineRendererComponent() = default;
-		LineRendererComponent(const LineRendererComponent&) = default;
-		LineRendererComponent(const glm::vec4& color, float width = 1.0f)
-			: Color(color), Width(width)
-		{
-		}
+		CircleRendererComponent() = default;
+		CircleRendererComponent(const CircleRendererComponent&) = default;
+	};
+
+	struct MeshRendererComponent
+	{
+		// TODO: Add more mesh types
+		enum class MeshType { Cube };
+		MeshType Mesh = MeshType::Cube;
+
+		glm::vec4 Color{ 1.0f, 1.0f, 1.0f, 1.0f };
+		glm::vec2 TextureUVOffset = glm::vec2(0.0f);
+		Ref<Texture2D> Texture;
+		float TilingFactor = 1.0f;
+
+		MeshRendererComponent() = default;
+		MeshRendererComponent(const MeshRendererComponent&) = default;
+		MeshRendererComponent(const glm::vec4& color)
+			: Color(color) {}
 	};
 
 	struct CameraComponent
 	{
-		SceneCamera OriginalCamera;
-		SceneCamera Camera = OriginalCamera;
-		bool OriginalPrimary = true; // TODO: think about moving to Scene
-		bool Primary = OriginalPrimary;
-		bool OriginalFixedAspectRatio = false;
-		bool FixedAspectRatio = OriginalFixedAspectRatio;
+		SceneCamera Camera;
+		bool Primary = true; // TODO: think about moving to Scene
+		bool FixedAspectRatio = false;
 
 		CameraComponent() = default;
 		CameraComponent(const CameraComponent&) = default;
 	};
 
+	class ScriptableEntity;
 	struct NativeScriptComponent
 	{
 		ScriptableEntity* Instance = nullptr;
 
-		ScriptableEntity*(*InstantiateScript)();
+		ScriptableEntity* (*InstantiateScript)();
 		void (*DestroyScript)(NativeScriptComponent*);
 
 		template<typename T>
@@ -101,5 +118,71 @@ namespace SpiritEngine {
 			DestroyScript = [](NativeScriptComponent* nsc) { delete nsc->Instance; nsc->Instance = nullptr; };
 		}
 	};
+
+	// Physics
+
+	struct Rigidbody2DComponent
+	{
+		enum class BodyType { Static = 0, Dynamic, Kinematic };
+		BodyType Type = BodyType::Static;
+		bool FixedRotation = false;
+
+		// Storage for runtime
+		void* RuntimeBody = nullptr;
+
+		Rigidbody2DComponent() = default;
+		Rigidbody2DComponent(const Rigidbody2DComponent&) = default;
+	};
+
+	struct BoxCollider2DComponent
+	{
+		glm::vec2 Offset = { 0.0f, 0.0f };
+		glm::vec2 Size = { 0.5f, 0.5f };
+
+		// TODO(Yan): move into physics material in the future maybe
+		float Density = 1.0f;
+		float Friction = 0.5f;
+		float Restitution = 0.0f;
+		float RestitutionThreshold = 0.5f;
+
+		// Storage for runtime
+		void* RuntimeFixture = nullptr;
+
+		BoxCollider2DComponent() = default;
+		BoxCollider2DComponent(const BoxCollider2DComponent&) = default;
+	};
+	
+	struct CircleCollider2DComponent
+	{
+		glm::vec2 Offset = { 0.0f, 0.0f };
+		float Radius = 0.5f;
+
+		// TODO(Yan): move into physics material in the future maybe
+		float Density = 1.0f;
+		float Friction = 0.5f;
+		float Restitution = 0.0f;
+		float RestitutionThreshold = 0.5f;
+
+		// Storage for runtime
+		void* RuntimeFixture = nullptr;
+
+		CircleCollider2DComponent() = default;
+		CircleCollider2DComponent(const CircleCollider2DComponent&) = default;
+	};
+
+	template<typename... Component>
+	struct ComponentGroup {};
+	using AllComponents = ComponentGroup
+		<
+		TransformComponent,
+		SpriteRendererComponent,
+		CircleRendererComponent,
+		MeshRendererComponent,
+		CameraComponent,
+		NativeScriptComponent,
+		Rigidbody2DComponent,
+		BoxCollider2DComponent,
+		CircleCollider2DComponent
+		>;
 
 }

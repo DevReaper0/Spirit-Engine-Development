@@ -1,6 +1,7 @@
 #include "spiritpch.h"
 #include "SpiritEngine/Renderer/Renderer.h"
 #include "SpiritEngine/Renderer/Renderer2D.h"
+#include "SpiritEngine/Renderer/Renderer3D.h"
 
 namespace SpiritEngine {
 
@@ -12,17 +13,18 @@ namespace SpiritEngine {
 
 		RenderCommand::Init();
 		Renderer2D::Init();
+		Renderer3D::Init();
 	}
 
 	void Renderer::Shutdown()
 	{
 		Renderer2D::Shutdown();
+		Renderer3D::Shutdown();
 	}
 
 	void Renderer::OnWindowResize(uint32_t width, uint32_t height)
 	{
 		RenderCommand::SetViewport(0, 0, width, height);
-		Renderer2D::SetViewport(width, height);
 	}
 
 	void Renderer::BeginScene(OrthographicCamera& camera)

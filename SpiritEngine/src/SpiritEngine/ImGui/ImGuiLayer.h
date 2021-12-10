@@ -22,25 +22,20 @@ namespace SpiritEngine {
 		void End();
 
 		void BlockEvents(bool block) { m_BlockEvents = block; }
-		
-		//static bool ColorEdit4(string label, float* col);
 
 		static void SetDarkThemeColors();
 		static void SetLightThemeColors();
-		static void SetPurpurThemeColors();
-		static void SetOrangeThemeColors();
-		static void SetCobaltThemeColors();
-		static void SetDandelionThemeColors();
-		static void SetRubyThemeColors();
-		static void SetGoldenThemeColors();
-		static void SetCharcoalThemeColors();
 		static void SetCorporateGreyThemeColors();
-		static void SetCherryThemeColors();
-		static void SetSapphireThemeColors();
-		static void SetCustomThemeColors(bool popup);
+		static void SetClassicDarkThemeColors();
+		static void SetClassicLightThemeColors();
+		static void SetClassicThemeColors();
+
+		static std::string GetTheme() { return m_Theme; }
 	private:
 		bool m_BlockEvents = true;
 		float m_Time = 0.0f;
+
+		static std::string m_Theme;
 	};
 
 }

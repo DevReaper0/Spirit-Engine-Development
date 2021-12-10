@@ -70,7 +70,7 @@ namespace SpiritEngine {
 
 		void WriteProfile(const ProfileResult& result)
 		{
-			std::stringstream json;
+			/*std::stringstream json;
 
 			json << std::setprecision(3) << std::fixed;
 			json << ",{";
@@ -88,7 +88,7 @@ namespace SpiritEngine {
 			{
 				m_OutputStream << json.str();
 				m_OutputStream.flush();
-			}
+			}*/
 		}
 
 		static Instrumentor& Get()

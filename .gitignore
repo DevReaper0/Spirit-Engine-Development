@@ -18,3 +18,8 @@ SpiritEngine.includes
 **.vcxproj
 **.vcxproj.filters
 **.vcxproj.user
+
+# Directories
+SpiritEngine/vendor/VulkanSDK
+SpiritEditor/assets/cache
+scripts/__pycache__

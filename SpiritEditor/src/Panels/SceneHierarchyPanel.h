@@ -19,7 +19,15 @@ namespace SpiritEngine {
 		Entity GetSelectionContext();
 
 		void OnImGuiRender();
+
+		void SetSelectedEntity(Entity entity ) { m_SelectionContext = entity; };
+		Entity GetSelectedEntity() const { return m_SelectionContext; }
+
+		void EntityCreation();
 	private:
+		template<typename T>
+		void DisplayAddComponentEntry(const std::string& entryName);
+
 		void DrawEntityNode(Entity entity);
 		void DrawComponents(Entity entity);
 	private:

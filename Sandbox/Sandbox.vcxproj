@@ -79,7 +79,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>SPIRIT_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;..\SpiritEngine\vendor\GLFW\include;..\SpiritEngine\vendor\Glad\include;..\SpiritEngine\vendor\imgui;..\SpiritEngine\vendor\glm;..\SpiritEngine\vendor\stb_image;..\SpiritEngine\vendor\entt\include;..\SpiritEngine\vendor\yaml-cpp\include;..\SpiritEngine\vendor\OpenAL-Soft\include;..\SpiritEngine\vendor\OpenAL-Soft\src;..\SpiritEngine\vendor\OpenAL-Soft\src\common;..\SpiritEngine\vendor\libogg\include;..\SpiritEngine\vendor\Vorbis\include;..\SpiritEngine\vendor\minimp3;..\SpiritEngine\vendor\SOIL\incs;..\SpiritEngine\vendor\SOIL\srcs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\SpiritEngine\vendor\spdlog\include;..\SpiritEngine\src;..\SpiritEngine\vendor;..\SpiritEngine\vendor\glm;..\SpiritEngine\vendor\entt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
@@ -87,10 +87,6 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
-    <ResourceCompile>
-      <PreprocessorDefinitions>SPIRIT_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;..\SpiritEngine\vendor\GLFW\include;..\SpiritEngine\vendor\Glad\include;..\SpiritEngine\vendor\imgui;..\SpiritEngine\vendor\glm;..\SpiritEngine\vendor\stb_image;..\SpiritEngine\vendor\entt\include;..\SpiritEngine\vendor\yaml-cpp\include;..\SpiritEngine\vendor\OpenAL-Soft\include;..\SpiritEngine\vendor\OpenAL-Soft\src;..\SpiritEngine\vendor\OpenAL-Soft\src\common;..\SpiritEngine\vendor\libogg\include;..\SpiritEngine\vendor\Vorbis\include;..\SpiritEngine\vendor\minimp3;..\SpiritEngine\vendor\SOIL\incs;..\SpiritEngine\vendor\SOIL\srcs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ResourceCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -101,7 +97,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>SPIRIT_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;..\SpiritEngine\vendor\GLFW\include;..\SpiritEngine\vendor\Glad\include;..\SpiritEngine\vendor\imgui;..\SpiritEngine\vendor\glm;..\SpiritEngine\vendor\stb_image;..\SpiritEngine\vendor\entt\include;..\SpiritEngine\vendor\yaml-cpp\include;..\SpiritEngine\vendor\OpenAL-Soft\include;..\SpiritEngine\vendor\OpenAL-Soft\src;..\SpiritEngine\vendor\OpenAL-Soft\src\common;..\SpiritEngine\vendor\libogg\include;..\SpiritEngine\vendor\Vorbis\include;..\SpiritEngine\vendor\minimp3;..\SpiritEngine\vendor\SOIL\incs;..\SpiritEngine\vendor\SOIL\srcs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\SpiritEngine\vendor\spdlog\include;..\SpiritEngine\src;..\SpiritEngine\vendor;..\SpiritEngine\vendor\glm;..\SpiritEngine\vendor\entt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -111,10 +107,6 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
-    <ResourceCompile>
-      <PreprocessorDefinitions>SPIRIT_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;..\SpiritEngine\vendor\GLFW\include;..\SpiritEngine\vendor\Glad\include;..\SpiritEngine\vendor\imgui;..\SpiritEngine\vendor\glm;..\SpiritEngine\vendor\stb_image;..\SpiritEngine\vendor\entt\include;..\SpiritEngine\vendor\yaml-cpp\include;..\SpiritEngine\vendor\OpenAL-Soft\include;..\SpiritEngine\vendor\OpenAL-Soft\src;..\SpiritEngine\vendor\OpenAL-Soft\src\common;..\SpiritEngine\vendor\libogg\include;..\SpiritEngine\vendor\Vorbis\include;..\SpiritEngine\vendor\minimp3;..\SpiritEngine\vendor\SOIL\incs;..\SpiritEngine\vendor\SOIL\srcs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ResourceCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -126,7 +118,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>SPIRIT_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;..\SpiritEngine\vendor\GLFW\include;..\SpiritEngine\vendor\Glad\include;..\SpiritEngine\vendor\imgui;..\SpiritEngine\vendor\glm;..\SpiritEngine\vendor\stb_image;..\SpiritEngine\vendor\entt\include;..\SpiritEngine\vendor\yaml-cpp\include;..\SpiritEngine\vendor\OpenAL-Soft\include;..\SpiritEngine\vendor\OpenAL-Soft\src;..\SpiritEngine\vendor\OpenAL-Soft\src\common;..\SpiritEngine\vendor\libogg\include;..\SpiritEngine\vendor\Vorbis\include;..\SpiritEngine\vendor\minimp3;..\SpiritEngine\vendor\SOIL\incs;..\SpiritEngine\vendor\SOIL\srcs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\SpiritEngine\vendor\spdlog\include;..\SpiritEngine\src;..\SpiritEngine\vendor;..\SpiritEngine\vendor\glm;..\SpiritEngine\vendor\entt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -136,10 +128,6 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
-    <ResourceCompile>
-      <PreprocessorDefinitions>SPIRIT_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;..\SpiritEngine\vendor\GLFW\include;..\SpiritEngine\vendor\Glad\include;..\SpiritEngine\vendor\imgui;..\SpiritEngine\vendor\glm;..\SpiritEngine\vendor\stb_image;..\SpiritEngine\vendor\entt\include;..\SpiritEngine\vendor\yaml-cpp\include;..\SpiritEngine\vendor\OpenAL-Soft\include;..\SpiritEngine\vendor\OpenAL-Soft\src;..\SpiritEngine\vendor\OpenAL-Soft\src\common;..\SpiritEngine\vendor\libogg\include;..\SpiritEngine\vendor\Vorbis\include;..\SpiritEngine\vendor\minimp3;..\SpiritEngine\vendor\SOIL\incs;..\SpiritEngine\vendor\SOIL\srcs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ResourceCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -156,9 +144,6 @@
     <ClCompile Include="src\ParticleSystem.cpp" />
     <ClCompile Include="src\Sandbox2D.cpp" />
     <ClCompile Include="src\SandboxApp.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="app.rc" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SpiritEngine\SpiritEngine.vcxproj">

@@ -1,5 +1,6 @@
 #pragma once
 #include "SpiritEngine/Core/Base.h"
+#include "SpiritEngine/Core/Application.h"
 
 #ifdef SPIRIT_PROFILE
 #include <filesystem>
@@ -7,7 +8,7 @@
 
 //#if defined SPIRIT_PLATFORM_WINDOWS
 
-extern SpiritEngine::Application* SpiritEngine::CreateApplication();
+extern SpiritEngine::Application* SpiritEngine::CreateApplication(ApplicationCommandLineArgs args);
 
 int main(int argc, char** argv)
 {
@@ -15,7 +16,7 @@ int main(int argc, char** argv)
 
 	std::filesystem::path binDirectory = std::filesystem::path(argv[0]).remove_filename();
 	SPIRIT_PROFILE_BEGIN_SESSION("Startup", (binDirectory / "SpiritEngineProfile-Startup.json").string());
-	auto app = SpiritEngine::CreateApplication();
+	auto app = SpiritEngine::CreateApplication({ argc, argv });
 	SPIRIT_PROFILE_END_SESSION();
 
 	SPIRIT_PROFILE_BEGIN_SESSION("Runtime", (binDirectory / "SpiritEngineProfile-Runtime.json").string());
@@ -29,14 +30,14 @@ int main(int argc, char** argv)
 
 /*#elif defined SPIRIT_PLATFORM_LINUX
 
-extern SpiritEngine::Application* SpiritEngine::CreateApplication();
+extern SpiritEngine::Application* SpiritEngine::CreateApplication(ApplicationCommandLineArgs args);
 
 int main(int argc, char** argv)
 {
 	SpiritEngine::Log::Init();
 
 	SPIRIT_PROFILE_BEGIN_SESSION("Startup", "SpiritEngineProfile-Startup.json");
-	auto app = SpiritEngine::CreateApplication();
+	auto app = SpiritEngine::CreateApplication({ argc, argv });
 	SPIRIT_PROFILE_END_SESSION();
 
 	SPIRIT_PROFILE_BEGIN_SESSION("Runtime", "SpiritEngineProfile-Runtime.json");

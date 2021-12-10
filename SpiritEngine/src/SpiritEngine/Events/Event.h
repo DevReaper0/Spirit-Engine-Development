@@ -1,9 +1,10 @@
 #pragma once
-#include <functional>
-#include <any>
 
 #include "SpiritEngine/Debug/Instrumentor.h"
 #include "SpiritEngine/Core/Base.h"
+
+#include <functional>
+#include <any>
 
 namespace SpiritEngine {
 

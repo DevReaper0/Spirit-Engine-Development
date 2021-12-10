@@ -7,41 +7,54 @@
 namespace SpiritEngine {
 
 	OrthographicCameraController::OrthographicCameraController(float aspectRatio, bool rotation)
-		: m_AspectRatio(aspectRatio), m_Camera(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel), m_Rotation(rotation)
+		: m_AspectRatio(aspectRatio), m_Camera(-m_AspectRatio * m_ZoomLevel, m_AspectRatio* m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel), m_EnableRotation(rotation)
 	{
+		/* Those remaps can be done (and should be done) at user-level layers or
+		 * apps). However, since this CameraController is using those Key Inputs
+		 * initially, if user forgot to map those key, camera will not react to
+		 * inputs, so we pre-map at least those keys here.
+		 */
+		 //Input::Remap("camera_move_left", SpiritEngine::InputKey(SPIRIT_KEY_A)); // this also works;
+		Input::Remap(InputName::CameraMoveLeft, SpiritEngine::InputKey(SpiritEngine::Key::A));
+		Input::Remap(InputName::CameraMoveRight, SpiritEngine::InputKey(SpiritEngine::Key::D));
+		Input::Remap(InputName::CameraMoveUp, SpiritEngine::InputKey(SpiritEngine::Key::W));
+		Input::Remap(InputName::CameraMoveDown, SpiritEngine::InputKey(SpiritEngine::Key::S));
+
+		Input::Remap(InputName::CameraRotateClockwise, SpiritEngine::InputKey(SpiritEngine::Key::E));
+		Input::Remap(InputName::CameraRotateAntiClockwise, SpiritEngine::InputKey(SpiritEngine::Key::Q));
 	}
 
 	void OrthographicCameraController::OnUpdate(Timestep ts)
 	{
 		SPIRIT_PROFILE_FUNCTION();
 
-		if (Input::IsKeyPressed(Key::A))
+		if (Input::IsInputPressed(InputName::CameraMoveLeft))
 		{
 			m_CameraPosition.x -= cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
 			m_CameraPosition.y -= sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
 		}
-		else if (Input::IsKeyPressed(Key::D))
+		else if (Input::IsInputPressed(InputName::CameraMoveRight))
 		{
 			m_CameraPosition.x += cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
 			m_CameraPosition.y += sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
 		}
 
-		if (Input::IsKeyPressed(Key::W))
+		if (Input::IsInputPressed(InputName::CameraMoveUp))
 		{
 			m_CameraPosition.x += -sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
 			m_CameraPosition.y += cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
 		}
-		else if (Input::IsKeyPressed(Key::S))
+		else if (Input::IsInputPressed(InputName::CameraMoveDown))
 		{
 			m_CameraPosition.x -= -sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
 			m_CameraPosition.y -= cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
 		}
 
-		if (m_Rotation)
+		if (m_EnableRotation)
 		{
-			if (Input::IsKeyPressed(Key::Q))
+			if (Input::IsInputPressed(InputName::CameraRotateClockwise))
 				m_CameraRotation += m_CameraRotationSpeed * ts;
-			if (Input::IsKeyPressed(Key::E))
+			if (Input::IsInputPressed(InputName::CameraRotateAntiClockwise))
 				m_CameraRotation -= m_CameraRotationSpeed * ts;
 
 			if (m_CameraRotation > 180.0f)
